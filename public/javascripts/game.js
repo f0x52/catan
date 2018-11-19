@@ -6,7 +6,7 @@ function generateBoard(board) {
   let layout = [3, 4, 5, 4, 3]
   let rowCount = 1
   let tileCount = 0
-  for(let i=1; i<=4; i++) { //Catan has 19 tiles
+  for(let i=1; i<=20; i++) { //Catan has 19 tiles
 
     if (tileCount == layout[0]) {
       layout.splice(0, 1)

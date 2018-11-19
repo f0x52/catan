@@ -9,11 +9,12 @@ a {
 }
 
 #board {
-  margin: 40px;
+  margin: 50px;
+  margin-left: 120px;
 }
 
 .row:nth-child(1) {
-  margin-left: 53px;
+  margin-left: 80px;
 }
 
 .row {
@@ -21,11 +22,11 @@ a {
 }
 
 .row:nth-child(3) {
-  margin-left: -53px;
+  margin-left: -80px;
 }
 
 .row:nth-child(5) {
-  margin-left: 53px;
+  margin-left: 80px;
 }
 
 .tilePart {
@@ -38,6 +39,8 @@ a {
 }
 
 .tile {
+  width: 160px;
+  border: 1px solid red;
 }
 
 .tile, .tilePart {
@@ -50,14 +53,15 @@ a {
 
 .tilePart:nth-child(1) {
   transform: rotate(-30deg);
+  margin-left: 20%;
 }
 
 .tilePart:nth-child(2) {
-  margin-left: -33%;
+  margin-left: -58%;
   transform: rotate(30deg);
 }
 
 .tilePart:nth-child(3) {
-  margin-left: -33%;
+  margin-left: -57.5%;
   transform: rotate(90deg);
 }
