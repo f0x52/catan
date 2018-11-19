@@ -1,8 +1,63 @@
-body {
-  padding: 50px;
+html, body {
+  padding: 0;
+  margin: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+#board {
+  margin: 40px;
+}
+
+.row:nth-child(1) {
+  margin-left: 53px;
+}
+
+.row {
+  margin-bottom: -24px;
+}
+
+.row:nth-child(3) {
+  margin-left: -53px;
+}
+
+.row:nth-child(5) {
+  margin-left: 53px;
+}
+
+.tilePart {
+  background: grey;
+  height: 140px;
+  width: 81px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  padding: 5px;
+}
+
+.tile {
+}
+
+.tile, .tilePart {
+  display: inline-block;
+}
+
+.tilePart {
+  float: left;
+}
+
+.tilePart:nth-child(1) {
+  transform: rotate(-30deg);
+}
+
+.tilePart:nth-child(2) {
+  margin-left: -33%;
+  transform: rotate(30deg);
+}
+
+.tilePart:nth-child(3) {
+  margin-left: -33%;
+  transform: rotate(90deg);
 }
