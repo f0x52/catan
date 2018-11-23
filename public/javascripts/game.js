@@ -96,12 +96,18 @@ function initResources() {
 }
 
 let resources = initResources()
+let numbers = [2,3,4,5,6,7,8,9,10,11,12]
+shuffleArray(numbers)
 let pos = 0
 Object.keys(game.tiles).forEach((tileName) => {
   let currentTile = game.tiles[tileName]
   currentTile.type = resources[pos]
+  if (resources[pos] != "desert") {
+    currentTile.number = numbers[pos%11]
+  }
   pos++
 })
+
 
 // Actual Clientside
 
@@ -109,25 +115,65 @@ let tilesPerRow = [3, 4, 5, 4, 3]
 let rowCount = 0
 let row = document.createElement("div")
 row.className = "row"
-let tileCount = 0
+let tileCount = 1
+let buildings = 0
+let firstTile = true
+
+function buildingSite(id) {
+  let buildingSite = document.createElement("div")
+  buildingSite.className = "building"
+  buildingSite.id = "building" + id
+  buildingSite.innerHTML = "X"
+  buildingSite.addEventListener('click', () => {console.log("building" + id)})
+  return buildingSite
+}
 
 Object.keys(game.tiles).forEach((tileName) => {
   let currentTile = game.tiles[tileName]
 
+  let tile = document.createElement("div")
+  tile.className = "tile " + currentTile.type
+  tile.id = "tile" + tileCount
+
+  if (firstTile) {
+    let building = buildingSite(buildings++)
+    building.className += " first"
+    tile.appendChild(building)
+  }
+
+  for(let i=0; i<2; i++) {
+    let building = buildingSite(i+buildings)
+    building.className += " child"+i
+    if (!firstTile) {
+      building.className += " noFirst"
+    }
+    tile.appendChild(building)
+  }
+  buildings = buildings +2
+
+  if (currentTile.number != null) {
+    let number = document.createElement("div")
+    number.innerHTML = "<b>" + currentTile.number + "</b>"
+    number.className = "num"
+    if (!firstTile) {
+      number.className += " noFirst"
+    }
+    tile.appendChild(number)
+  }
+
+  if (firstTile) {
+    firstTile = false
+  }
+
+  row.appendChild(tile)
   if (tileCount == tilesPerRow[rowCount]) {
     board.appendChild(row)
     rowCount++
     row = document.createElement("div")
     row.className = "row"
     tileCount = 1
+    firstTile = true
   } else {
     tileCount++;
   }
-
-  let tile = document.createElement("div")
-  tile.className = "tile " + currentTile.type
-  tile.id = "tile" + tileCount
-  row.appendChild(tile)
 })
-//add last row
-board.appendChild(row)
