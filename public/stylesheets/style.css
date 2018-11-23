@@ -25,7 +25,7 @@ a {
 }
 
 .row {
-  margin-bottom: -38px;
+  margin-bottom: -33px;
 }
 
 .row:nth-child(1), .row:nth-child(5) {
@@ -48,6 +48,8 @@ a {
   justify-content: space-between; */
   height: 145px;
   width: 130px;
+  background: url(../images/Forest.png);
+  background-size: cover;
 }
 
 .tile.grain {
@@ -86,7 +88,7 @@ a {
   flex: none;
 }
 
-.num, .building {
+#num, .building {
   text-align: center;
   font-weight: bold;
   font-size: 130%;
@@ -95,15 +97,15 @@ a {
   border-radius: 10px;
 }
 
-.num {
-  display: inline-block;
-  float: left;
-  margin-left: 30px;
-  margin-top: 35px;
+.tile:nth-child(1) #num {
+  margin-left: 35px;
 }
 
-.num.noFirst {
+#num {
+  display: inline-block;
+  float: left;
   margin-left: 50px;
+  margin-top: 35px;
 }
 
 .building.first {
@@ -114,32 +116,50 @@ a {
   float: left;
   background: grey;
   color: white;
-  z-index: 5;
+  z-index: 500;
+}
+
+.building.top {
   margin-top: 15px;
 }
 
-.building.first { /* left */
+.building.left.bottom {
+  margin-top: 75px;
+  margin-left: -95px;
+}
+
+.building.middle.bottom {
+  margin-left: 50px;
+  margin-top: 25px;
+}
+
+.building.right.bottom {
+  margin-top: 75px;
+  margin-right: -30px;
+}
+
+.building.left {
   margin-left: -15px;
 }
 
-.building.child0 { /* middle */
-  margin-left: 30px;
-  margin-top: -15px;
-}
-
-.building.child0.noFirst {
+.building.middle.top {
   margin-left: 50px;
 }
 
-.building.child1 { /* right */
+.tile:nth-child(1) .building.middle.top {
+  margin-left: 30px;
+}
+
+.building.middle.top {
+  margin-top: -15px;
+}
+
+.building.right { /* right */
   float: right;
   margin-right: -15px;
 }
 
-.numberCombination {
-  flex-direction: column;
-}
-
-.numberCombination .num {
-
+.row.last .building.right.bottom {
+  margin-top: 0;
+  margin-right: -15px;
 }

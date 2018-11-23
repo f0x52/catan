@@ -130,50 +130,13 @@ function buildingSite(id) {
 
 Object.keys(game.tiles).forEach((tileName) => {
   let currentTile = game.tiles[tileName]
-
-  let tile = document.createElement("div")
-  tile.className = "tile " + currentTile.type
-  tile.id = "tile" + tileCount
-
-  if (firstTile) {
-    let building = buildingSite(buildings++)
-    building.className += " first"
-    tile.appendChild(building)
-  }
-
-  for(let i=0; i<2; i++) {
-    let building = buildingSite(i+buildings)
-    building.className += " child"+i
-    if (!firstTile) {
-      building.className += " noFirst"
-    }
-    tile.appendChild(building)
-  }
-  buildings = buildings +2
-
+  console.log(tileName)
+  let tile = document.getElementById(tileName)
+  tile.className += " " + currentTile.type
+  let numberDiv = document.querySelector("#" + tileName + " #num")
   if (currentTile.number != null) {
-    let number = document.createElement("div")
-    number.innerHTML = "<b>" + currentTile.number + "</b>"
-    number.className = "num"
-    if (!firstTile) {
-      number.className += " noFirst"
-    }
-    tile.appendChild(number)
-  }
-
-  if (firstTile) {
-    firstTile = false
-  }
-
-  row.appendChild(tile)
-  if (tileCount == tilesPerRow[rowCount]) {
-    board.appendChild(row)
-    rowCount++
-    row = document.createElement("div")
-    row.className = "row"
-    tileCount = 1
-    firstTile = true
+    numberDiv.innerHTML = currentTile.number
   } else {
-    tileCount++;
+    numberDiv.style.opacity = 0
   }
 })
