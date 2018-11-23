@@ -7,6 +7,7 @@ html, body {
   padding: 0;
   margin: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-height: 100vh;
 }
 
 body {
@@ -19,85 +20,63 @@ a {
 }
 
 #board {
-  margin: 50px;
-  margin-top: 120px;
-  margin-left: 120px;
   align-self: center;
   display: inline-block;
 }
 
 .row {
-  margin-bottom: -48px;
+  margin-bottom: -38px;
 }
 
-.row:nth-child(1) {
-  margin-left: 80px;
+.row:nth-child(1), .row:nth-child(5) {
+  margin-left: 130px;
 }
 
-.row:nth-child(3) {
-  margin-left: -83px;
+.row:nth-child(2), .row:nth-child(4) {
+  margin-left: 65px;
 }
 
 .row:nth-child(5) {
-  margin-left: 80px;
-}
-
-.tilePart {
-  height: 140px;
-  width: 81px;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  padding: 5px;
+  margin-bottom: 0;
 }
 
 .tile {
-  width: 160px;
-  border: 1px solid transparent;
-  padding-bottom: 15px;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   display: inline-flex;
   justify-content: center;
+  height: 145px;
+  width: 130px;
 }
 
-.tile.field {
+.tile.grain {
   background: url(../images/Field.png);
   background-size: cover;
 }
 
-.tile.forest {
+.tile.wood {
   background: url(../images/Forest.png);
   background-size: cover;
 }
 
-.tile.mesa {
+.tile.brick {
   background: url(../images/Mesa.png);
   background-size: cover;
 }
 
-.tile.mountain {
+.tile.iron {
   background: url(../images/Mountain.png);
   background-size: cover;
 }
 
-.tile.pasture {
+.tile.wool {
   background: url(../images/Pasture.png);
   background-size: cover;
 }
 
-.tile#tile10 {
+.tile.desert {
   background: url(../images/Desert.png);
   background-size: cover;
-}
-
-.tilePart {
-  display: inline-block;
-}
-
-.tilePart {
-  float: left;
-  border-top: 5px solid red;
-  border-bottom: 5px solid red;
 }
 
 .num {
@@ -112,19 +91,4 @@ a {
   align-self: center;
   padding: 8px 10px;
   border-radius: 10px;
-}
-
-.tilePart:nth-child(1) {
-  transform: rotate(-30deg);
-  margin-left: 20%;
-}
-
-.tilePart:nth-child(2) {
-  margin-left: -58%;
-  transform: rotate(30deg);
-}
-
-.tilePart:nth-child(3) {
-  margin-left: -57.5%;
-  transform: rotate(90deg);
 }
