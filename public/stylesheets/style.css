@@ -1,7 +1,17 @@
+html {
+  background: url(../images/bg.png);
+  background-size: cover;
+}
+
 html, body {
   padding: 0;
   margin: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
 }
 
 a {
@@ -10,19 +20,22 @@ a {
 
 #board {
   margin: 50px;
+  margin-top: 120px;
   margin-left: 120px;
+  align-self: center;
+  display: inline-block;
+}
+
+.row {
+  margin-bottom: -48px;
 }
 
 .row:nth-child(1) {
   margin-left: 80px;
 }
 
-.row {
-  margin-bottom: -24px;
-}
-
 .row:nth-child(3) {
-  margin-left: -80px;
+  margin-left: -83px;
 }
 
 .row:nth-child(5) {
@@ -30,7 +43,6 @@ a {
 }
 
 .tilePart {
-  background: grey;
   height: 140px;
   width: 81px;
   border-top: 5px solid transparent;
@@ -40,15 +52,66 @@ a {
 
 .tile {
   width: 160px;
-  border: 1px solid red;
+  border: 1px solid transparent;
+  padding-bottom: 15px;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  display: inline-flex;
+  justify-content: center;
 }
 
-.tile, .tilePart {
+.tile.field {
+  background: url(../images/Field.png);
+  background-size: cover;
+}
+
+.tile.forest {
+  background: url(../images/Forest.png);
+  background-size: cover;
+}
+
+.tile.mesa {
+  background: url(../images/Mesa.png);
+  background-size: cover;
+}
+
+.tile.mountain {
+  background: url(../images/Mountain.png);
+  background-size: cover;
+}
+
+.tile.pasture {
+  background: url(../images/Pasture.png);
+  background-size: cover;
+}
+
+.tile#tile10 {
+  background: url(../images/Desert.png);
+  background-size: cover;
+}
+
+.tilePart {
   display: inline-block;
 }
 
 .tilePart {
   float: left;
+  border-top: 5px solid red;
+  border-bottom: 5px solid red;
+}
+
+.num {
+  text-align: center;
+  font-weight: bold;
+  font-size: 130%;
+  background-color: white;
+  flex: 0 0 auto;
+  display: inline-block;
+  margin-left: -75%;
+  margin-top: 5%;
+  align-self: center;
+  padding: 8px 10px;
+  border-radius: 10px;
 }
 
 .tilePart:nth-child(1) {
