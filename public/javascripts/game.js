@@ -111,23 +111,6 @@ Object.keys(game.tiles).forEach((tileName) => {
 
 // Actual Clientside
 
-let tilesPerRow = [3, 4, 5, 4, 3]
-let rowCount = 0
-let row = document.createElement("div")
-row.className = "row"
-let tileCount = 1
-let buildings = 0
-let firstTile = true
-
-function buildingSite(id) {
-  let buildingSite = document.createElement("div")
-  buildingSite.className = "building"
-  buildingSite.id = "building" + id
-  buildingSite.innerHTML = "X"
-  buildingSite.addEventListener('click', () => {console.log("building" + id)})
-  return buildingSite
-}
-
 Object.keys(game.tiles).forEach((tileName) => {
   let currentTile = game.tiles[tileName]
   console.log(tileName)
@@ -140,3 +123,11 @@ Object.keys(game.tiles).forEach((tileName) => {
     numberDiv.style.opacity = 0
   }
 })
+
+let buildings = document.getElementsByClassName("building")
+for (let i = 0; i < buildings.length; i++) {
+  buildings[i].addEventListener("click", (event) => {
+    console.log(event.target.id)
+  })
+  buildings[i].innerHTML = buildings[i].id.substr(8)
+}
