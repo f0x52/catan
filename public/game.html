@@ -5,130 +5,15 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-      <div id="board">
-        <div class="row">
-            <div class="tile" id="tileA">
-                <div class="building left top" id="building0">X</div>
-                <div class="building middle top" id="building1">X</div>
-                <div class="building right top" id="building2">X</div>
-                <div id="num">8</div>
-            </div>
-            <div class="tile" id="tileB">
-                <div class="building middle top" id="building3">X</div>
-                <div class="building right top" id="building4">X</div>
-                <div id="num">8</div>
-            </div>
-            <div class="tile" id="tileC">
-                <div class="building middle top" id="building5">X</div>
-                <div class="building right top" id="building6">X</div>
-                <div id="num">8</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="tile" id="tileD">
-                <div class="building left top" id="building7">X</div>
-                <div class="building middle top" id="building8">X</div>
-                <div class="building right top" id="building9">X</div>
-                <div id="num">8</div>
-            </div>
-            <div class="tile" id="tileE">
-                <div class="building middle top" id="building10">X</div>
-                <div class="building right top" id="building11">X</div>
-                <div id="num">8</div>
-            </div>
-            <div class="tile" id="tileF">
-                <div class="building middle top" id="building12">X</div>
-                <div class="building right top" id="building13">X</div>
-                <div id="num">8</div>
-            </div>
-            <div class="tile" id="tileG">
-                <div class="building middle top" id="building14">X</div>
-                <div class="building right top" id="building15">X</div>
-                <div id="num">8</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="tile" id="tileH">
-                <div class="building left top" id="building16">X</div>
-                <div class="building middle top" id="building17">X</div>
-                <div class="building right top" id="building18">X</div>
-                <div id="num">8</div>
-                <div class="building left bottom" id="building27">X</div>
-            </div>
-            <div class="tile" id="tileI">
-                <div class="building middle top" id="building19">X</div>
-                <div class="building right top" id="building20">X</div>
-                <div id="num">8</div>
-            </div>
-            <div class="tile" id="tileJ">
-                <div class="building middle top" id="building21">X</div>
-                <div class="building right top" id="building22">X</div>
-                <div id="num">8</div>
-            </div>
-            <div class="tile" id="tileK">
-                <div class="building middle top" id="building23">X</div>
-                <div class="building right top" id="building24">X</div>
-                <div id="num">8</div>
-            </div>
-            <div class="tile" id="tileL">
-                <div class="building middle top" id="building25">X</div>
-                <div class="building right top" id="building26">X</div>
-                <div id="num">8</div>
-                <div class="building right bottom" id="building37">X</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="tile" id="tileM">
-                <div class="building left top" id="building28">X</div>
-                <div class="building middle top" id="building29">X</div>
-                <div class="building right top" id="building30">X</div>
-                <div id="num">8</div>
-                <div class="building left bottom" id="building38">X</div>
-            </div>
-            <div class="tile" id="tileN">
-                <div class="building middle top" id="building31">X</div>
-                <div class="building right top" id="building32">X</div>
-                <div id="num">8</div>
-            </div>
-            <div class="tile" id="tileO">
-                <div class="building middle top" id="building33">X</div>
-                <div class="building right top" id="building34">X</div>
-                <div id="num">8</div>
-            </div>
-            <div class="tile" id="tileP">
-                <div class="building middle top" id="building35">X</div>
-                <div class="building right top" id="building36">X</div>
-                <div id="num">8</div>
-                <div class="building right bottom" id="building46">X</div>
-            </div>
-        </div>
-        <div class="row last">
-            <div class="tile" id="tileQ">
-                <div class="building left top" id="building39">X</div>
-                <div class="building middle top" id="building40">X</div>
-                <div class="building right top" id="building41">X</div>
-                <div id="num">8</div>
-                <div class="building left bottom" id="building47">X</div>
-                <div class="building middle bottom" id="building48">X</div>
-                <div class="building right bottom" id="building49">X</div>
-            </div>
-            <div class="tile" id="tileR">
-                <div class="building middle top" id="building42">X</div>
-                <div class="building right top" id="building43">X</div>
-                <div id="num">8</div>
-                <div class="building middle bottom" id="building50">X</div>
-                <div class="building right bottom" id="building51">X</div>
-            </div>
-            <div class="tile" id="tileS">
-                <div class="building middle top" id="building44">X</div>
-                <div class="building right top" id="building45">X</div>
-                <div id="num">8</div>
-                <div class="building middle bottom" id="building52">X</div>
-                <div class="building right bottom" id="building53">X</div>
-            </div>
-        </div>
+    <div id="board">
+      <div id="tiles">
+      </div>
+      <div id="buildings">
+      </div>
+      <canvas id="roads" height="0">
+      </canvas>
     </div>
-    <a href="https://github.com/f0x52/catan"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
+    <a href="https://github.com/f052/catan"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
     <script src="/javascripts/game.js">
     </script>
   </body>
