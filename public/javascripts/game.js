@@ -96,18 +96,30 @@ function initResources() {
 }
 
 let resources = initResources()
-let numbers = [2,3,4,5,6,8,9,10,11,12]
+let numbers = []
+for(let i=2; i<=12; i++) {
+  if (i==7) {
+    continue
+  }
+  numbers.push(i);
+  if (i != 2 && i != 12) {
+    numbers.push(i)
+  }
+}
 shuffleArray(numbers)
+console.log(numbers)
 let pos = 0
+let numPos = 0
+let usedNumbers = {}
 Object.keys(game.tiles).forEach((tileName) => {
   let currentTile = game.tiles[tileName]
   currentTile.type = resources[pos]
   if (resources[pos] != "desert") {
-    currentTile.number = numbers[pos%11]
+    currentTile.number = numbers[numPos]
+    numPos++
   }
   pos++
 })
-
 
 // Actual Clientside
 
@@ -138,8 +150,7 @@ for (let i=boardSize[1]; i>=boardSize[0]; i--) {
 }
 
 function Row(tiles, location, middleRow) {
-  let row = document.createElement("div")
-  row.className = "row"
+  let row = document.createElement("row")
   let firstChild = true
   let lastChild = false
 
@@ -147,18 +158,19 @@ function Row(tiles, location, middleRow) {
     if (i==tiles-1) {
       lastChild = true
     }
-    let tile = document.createElement("div")
-    let gameTile = game.tiles[Object.keys(game.tiles)[placedTiles]]
-    tile.className = "tile "
+    let tile = document.createElement("tile")
+    let tileName = Object.keys(game.tiles)[placedTiles]
+    let gameTile = game.tiles[tileName]
     if (gameTile != undefined) {
       tile.className += gameTile.type
       tile.appendChild(Num(gameTile.number))
-
     }
+
+    tile.id = tileName
     tile.style.height = tileHeight+"px"
     tile.style.width = tileWidth+"px"
     tile.style.marginRight = 0
-    tile.addEventListener("click", (e) => {e.target.style.display = 'none'})
+    tile.addEventListener("click", (e) => {console.log(e.target.id)})
 
     for (let j=0; j<3; j++) {
       tile.appendChild(Building(j, location, firstChild))
@@ -172,7 +184,7 @@ function Row(tiles, location, middleRow) {
       }
     }
 
-    if (firstChild && location == "bottom") {
+    if (firstChild && location == "bottom" && !middleRow) {
       tile.appendChild(Road(6, "top"))
     }
 
@@ -195,8 +207,8 @@ function Row(tiles, location, middleRow) {
 }
 
 function Building(num, location, firstChild) {
-  let building = document.createElement("div")
-  building.className = "building " + location + " pos" + num + " red city"
+  let building = document.createElement("building")
+  building.className = location + " pos" + num + " red city"
   //strPossibility(12, " red") + strPossibility(25, " blue") + strPossibility(12, " orange") + strPossibility(12, " white") + strPossibility(25, " city")
   building.style.gridArea = location+num
   if (num==0 && !firstChild) {
@@ -216,8 +228,7 @@ function Road(num, location, lastChild) {
 }
 
 function Num(num) {
-  let number = document.createElement("div")
-  number.className = "number"
+  let number = document.createElement("number")
   if (num != undefined) {
     number.innerHTML = num
   } else {

@@ -24,7 +24,11 @@ a {
   display: inline-block;
 }
 
-.tile {
+row, tile, building, number {
+  display: block;
+}
+
+tile {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   background: url(../images/Field.png);
@@ -38,7 +42,7 @@ a {
     'bottom0 road5 bottom1 road4 bottom2'
 }
 
-.number {
+number {
   display: inline-block;
   justify-self: center;
   align-self: center;
@@ -51,44 +55,50 @@ a {
 
 /* BUILDINGS */
 
-.building {
+building {
   height: 36px;
   width: 28px;
   z-index: 100;
+  opacity: 0;
+  transition: 0.1s;
 }
 
-.building.city {
+building:hover {
+  opacity: 0.8;
+}
+
+building.city {
   height: 39px;
   width: 33px;
 }
 
-.building.top {
+building.top {
   align-self: end;
   margin-top: -15px;
 }
 
-.building.top.pos1 {
+building.top.pos1 {
   margin-top: -25px;
 }
 
-.building.pos0 {
+building.pos0 {
   margin-left: -13px;
 }
 
-.building.pos1 {
+building.pos1 {
   margin-left: -4px;
 }
 
-.building.top.pos1 {
+building.top.pos1 {
   align-self: start;
   justify-self: center;
 }
 
-.building.bottom {
+building.bottom {
   margin-top: -18px;
 }
 
-.building.bottom.pos1 {
+building.bottom.pos1 {
   align-self: end;
   justify-self: center;
   margin-bottom: -12px;
@@ -104,7 +114,7 @@ road {
 road.pos0 {
   transform: rotate(90deg);
   margin-left: -40px;
-  margin-top: 35px;
+  margin-top: 21px;
   grid-area: road0;
 }
 
@@ -146,79 +156,79 @@ road.pos5 {
 road.pos6 {
   transform: rotate(90deg);
   margin-left: -37px;
-  margin-top: 19px;
+  margin-top: 46px;
   grid-area: road0;
 }
 
 
 /* TEXTURES */
 
-.tile.grain {
+tile.grain {
   background: url(../images/Field.png);
   background-size: cover;
 }
 
-.tile.wood {
+tile.wood {
   background: url(../images/Forest.png);
   background-size: cover;
 }
 
-.tile.brick {
+tile.brick {
   background: url(../images/Mesa.png);
   background-size: cover;
 }
 
-.tile.iron {
+tile.iron {
   background: url(../images/Mountain.png);
   background-size: cover;
 }
 
-.tile.wool {
+tile.wool {
   background: url(../images/Pasture.png);
   background-size: cover;
 }
 
-.tile.desert {
+tile.desert {
   background: url(../images/Desert.png);
   background-size: cover;
 }
 
-.building.blue {
+building.blue {
   background: url(../images/blue-village.png);
   background-size: cover;
 }
 
-.building.red {
+building.red {
   background: url(../images/red-village.png);
   background-size: cover;
 }
 
-.building.orange {
+building.orange {
   background: url(../images/orange-village.png);
   background-size: cover;
 }
 
-.building.white {
+building.white {
   background: url(../images/white-village.png);
   background-size: cover;
 }
 
-.building.blue.city {
+building.blue.city {
   background: url(../images/blue-city.png);
   background-size: cover;
 }
 
-.building.red.city {
+building.red.city {
   background: url(../images/red-city.png);
   background-size: cover;
 }
 
-.building.orange.city {
+building.orange.city {
   background: url(../images/orange-city.png);
   background-size: cover;
 }
 
-.building.white.city {
+building.white.city {
   background: url(../images/white-city.png);
   background-size: cover;
 }
