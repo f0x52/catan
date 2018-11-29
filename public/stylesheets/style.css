@@ -27,15 +27,15 @@ a {
 .tile {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
-  background: url(../images/Forest.png);
+  background: url(../images/Field.png);
   background-size: cover;
   display: inline-grid;
-  grid-template-columns: 14px auto 8px;
-  grid-template-rows: 15px auto 15px;
+  grid-template-columns: 14px 10px auto 10px 14px;
+  grid-template-rows: 48px auto 45px;
   grid-template-areas:
-    'top0 top1 top2'
-    '. num .'
-    'bottom0 bottom1 bottom2'
+    'top0 road1 top1 road2 top2'
+    'road0 . num . road3'
+    'bottom0 road5 bottom1 road4 bottom2'
 }
 
 .number {
@@ -57,6 +57,11 @@ a {
   z-index: 100;
 }
 
+.building.city {
+  height: 39px;
+  width: 33px;
+}
+
 .building.top {
   align-self: end;
   margin-top: -15px;
@@ -67,7 +72,7 @@ a {
 }
 
 .building.pos0 {
-  margin-left: -14px;
+  margin-left: -13px;
 }
 
 .building.pos1 {
@@ -87,6 +92,62 @@ a {
   align-self: end;
   justify-self: center;
   margin-bottom: -12px;
+}
+
+/* ROADS */
+road {
+  background: red;
+  height: 10px;
+  width: 80px;
+}
+
+road.pos0 {
+  transform: rotate(90deg);
+  margin-left: -40px;
+  margin-top: 35px;
+  grid-area: road0;
+}
+
+road.pos1 {
+  transform: rotate(-30deg);
+  margin-left: -16px;
+  margin-top: 10px;
+  grid-area: road1;
+}
+
+road.pos2 {
+  transform: rotate(30deg);
+  margin-left: -52px;
+  margin-top: 10px;
+  grid-area: road2;
+}
+
+road.pos3 {
+  transform: rotate(90deg);
+  margin-left: -26px;
+  margin-top: 28px;
+  grid-area: road3;
+}
+
+road.pos4 {
+  transform: rotate(-30deg);
+  margin-left: -52px;
+  margin-top: 18px;
+  grid-area: road4;
+}
+
+road.pos5 {
+  transform: rotate(30deg);
+  margin-left: -15px;
+  margin-top: 19px;
+  grid-area: road5;
+}
+
+road.pos6 {
+  transform: rotate(90deg);
+  margin-left: -37px;
+  margin-top: 19px;
+  grid-area: road0;
 }
 
 

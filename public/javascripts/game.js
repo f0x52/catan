@@ -96,7 +96,7 @@ function initResources() {
 }
 
 let resources = initResources()
-let numbers = [2,3,4,5,6,7,8,9,10,11,12]
+let numbers = [2,3,4,5,6,8,9,10,11,12]
 shuffleArray(numbers)
 let pos = 0
 Object.keys(game.tiles).forEach((tileName) => {
@@ -118,7 +118,7 @@ let roads = document.getElementById("roads")
 let boardSize = [3,5] //min tiles per row, max tiles per row
 let tileHeight = 160
 let tileWidth = Math.sqrt(3)*tileHeight/2 * (27/26) // texture isn't a perfect hexagon
-let rowDistance = "-"+tileHeight/4+"px"
+let rowDistance = 0//"-"+tileHeight/4+"px"
 
 let placedTiles = 0
 
@@ -141,51 +141,78 @@ function Row(tiles, location, middleRow) {
   let row = document.createElement("div")
   row.className = "row"
   let firstChild = true
+  let lastChild = false
 
   for (let i=0; i<tiles; i++) {
+    if (i==tiles-1) {
+      lastChild = true
+    }
     let tile = document.createElement("div")
     let gameTile = game.tiles[Object.keys(game.tiles)[placedTiles]]
-    tile.className = "tile " + gameTile.type
+    tile.className = "tile "
+    if (gameTile != undefined) {
+      tile.className += gameTile.type
+      tile.appendChild(Num(gameTile.number))
+
+    }
     tile.style.height = tileHeight+"px"
     tile.style.width = tileWidth+"px"
-    tile.style.marginRight = tileHeight/15+"px"
-
-    tile.style.gridTemplateRows = 1/4*tileHeight + "px auto " + 1/4*tileHeight + "px"
+    tile.style.marginRight = 0
+    tile.addEventListener("click", (e) => {e.target.style.display = 'none'})
 
     for (let j=0; j<3; j++) {
       tile.appendChild(Building(j, location, firstChild))
+      tile.appendChild(Road(j, location, lastChild))
     }
 
     if (middleRow) {
       for(let j=0; j<3; j++) {
         tile.appendChild(Building(j, "top", firstChild))
+        tile.appendChild(Road(j, "top"))
       }
+    }
+
+    if (firstChild && location == "bottom") {
+      tile.appendChild(Road(6, "top"))
+    }
+
+    if (lastChild && location == "top") {
+      tile.appendChild(Road(3, location))
     }
 
     if (firstChild) {
       firstChild = false
     }
 
-    tile.appendChild(Num(gameTile.number))
 
     row.appendChild(tile)
     placedTiles++
   }
-  let offset = (boardSize[1]-tiles) * ( 0.5 * tileWidth + .75*tileHeight/20)
+  let offset = (boardSize[1]-tiles) * ( 0.5 * tileWidth)
   row.style.marginLeft = offset + "px"
-  row.style.marginBottom = -tileHeight/4 + tileHeight/10 + "px"
+  row.style.marginBottom = "-40px"
   return row
 }
 
 function Building(num, location, firstChild) {
   let building = document.createElement("div")
-  building.className = "building " + location + " pos" + num + strPossibility(12, " red") + strPossibility(25, " blue") + strPossibility(12, " orange") + strPossibility(12, " white") + strPossibility(25, " city")
+  building.className = "building " + location + " pos" + num + " red city"
+  //strPossibility(12, " red") + strPossibility(25, " blue") + strPossibility(12, " orange") + strPossibility(12, " white") + strPossibility(25, " city")
   building.style.gridArea = location+num
   if (num==0 && !firstChild) {
     building.style.opacity = 0;
     building.style.zIndex = -100;
   }
   return building
+}
+
+function Road(num, location, lastChild) {
+  let road = document.createElement("road")
+  if (location == "bottom") {
+    num = num+3
+  }
+  road.className = "pos" + num
+  return road
 }
 
 function Num(num) {
