@@ -53,18 +53,26 @@ number {
   grid-area: num;
 }
 
+building, road {
+  opacity: 0;
+}
+
+building.placed, road.placed {
+  opacity: 1;
+}
+
+building:hover, road:hover {
+  opacity: 0.8;
+}
+
+
 /* BUILDINGS */
 
 building {
   height: 36px;
   width: 28px;
   z-index: 100;
-  opacity: 0;
   transition: 0.1s;
-}
-
-building:hover {
-  opacity: 0.8;
 }
 
 building.city {
@@ -106,7 +114,6 @@ building.bottom.pos1 {
 
 /* ROADS */
 road {
-  background: red;
   height: 10px;
   width: 80px;
 }
@@ -231,4 +238,20 @@ building.orange.city {
 building.white.city {
   background: url(../images/white-city.png);
   background-size: cover;
+}
+
+road.red {
+  background: red;
+}
+
+road.orange {
+  background: orange;
+}
+
+road.blue {
+  background: blue;
+}
+
+road.white {
+  background: white;
 }

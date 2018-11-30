@@ -124,28 +124,26 @@ Object.keys(game.tiles).forEach((tileName) => {
 // Actual Clientside
 
 let board = document.getElementById("board")
-let tiles = document.getElementById("tiles")
-let buildings = document.getElementById("buildings")
-let roads = document.getElementById("roads")
 let boardSize = [3,5] //min tiles per row, max tiles per row
 let tileHeight = 160
 let tileWidth = Math.sqrt(3)*tileHeight/2 * (27/26) // texture isn't a perfect hexagon
 let rowDistance = 0//"-"+tileHeight/4+"px"
-
 let placedTiles = 0
+let placedBuildings = 0
+let placedRoads = 0
 
 tiles.style.marginTop = rowDistance //compensate for marginBottom on rows
 
 //Top half
 for (let i=boardSize[0]; i<boardSize[1]; i++) {
-  tiles.appendChild(Row(i, "top"))
+  board.appendChild(Row(i, "top"))
 }
 
 let middleRow = true
 
 //Middle + Bottom half
 for (let i=boardSize[1]; i>=boardSize[0]; i--) {
-  tiles.appendChild(Row(i, "bottom", middleRow))
+  board.appendChild(Row(i, "bottom", middleRow))
   middleRow = false
 }
 
@@ -208,22 +206,28 @@ function Row(tiles, location, middleRow) {
 
 function Building(num, location, firstChild) {
   let building = document.createElement("building")
-  building.className = location + " pos" + num + " red city"
-  //strPossibility(12, " red") + strPossibility(25, " blue") + strPossibility(12, " orange") + strPossibility(12, " white") + strPossibility(25, " city")
+  building.className = location + " pos" + num
+  building.className += " " + myColor
   building.style.gridArea = location+num
   if (num==0 && !firstChild) {
     building.style.opacity = 0;
     building.style.zIndex = -100;
+  } else {
+    building.id = "building"+placedBuildings
+    placedBuildings++
   }
   return building
 }
 
 function Road(num, location, lastChild) {
   let road = document.createElement("road")
+  road.id = "road"+placedRoads
   if (location == "bottom") {
     num = num+3
   }
   road.className = "pos" + num
+  road.className += " " + myColor
+  placedRoads++
   return road
 }
 
@@ -237,9 +241,27 @@ function Num(num) {
   return number
 }
 
-function strPossibility(odds, str) {
-  if(Math.random()*100 < odds) {
-    return str
-  }
-  return ""
-}
+// function showRoads(i) {
+//   console.log("showing road", i)
+//   if (i<76) {
+//     document.getElementById("road"+i).className += " placed"
+//   } else {
+//     setTimeout(() => {showBuildings(0)}, 200)
+//     return
+//   }
+//   setTimeout(() => {showRoads(++i)}, 100)
+// }
+//
+// function showBuildings(i) {
+//   console.log("showing building", i)
+//   if (i<54) {
+//     document.getElementById("building"+i).className += " placed"
+//   } else {
+//     document.getElementById("building"+(i-54)).className += " city"
+//   }
+//   if (i < 107) {
+//     setTimeout(() => {showBuildings(++i)}, 200)
+//   }
+// }
+//
+// setTimeout(() => showRoads(0), 1500)
