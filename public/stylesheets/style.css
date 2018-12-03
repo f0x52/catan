@@ -1,7 +1,18 @@
+html {
+  background: url(../images/bg.png);
+  background-size: cover;
+}
+
 html, body {
   padding: 0;
   margin: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+body {
+  display: flex;
+  justify-content: center;
 }
 
 a {
@@ -9,59 +20,238 @@ a {
 }
 
 #board {
-  margin: 50px;
-  margin-left: 120px;
-}
-
-.row:nth-child(1) {
-  margin-left: 80px;
-}
-
-.row {
-  margin-bottom: -24px;
-}
-
-.row:nth-child(3) {
-  margin-left: -80px;
-}
-
-.row:nth-child(5) {
-  margin-left: 80px;
-}
-
-.tilePart {
-  background: grey;
-  height: 140px;
-  width: 81px;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  padding: 5px;
-}
-
-.tile {
-  width: 160px;
-  border: 1px solid red;
-}
-
-.tile, .tilePart {
+  align-self: center;
   display: inline-block;
 }
 
-.tilePart {
-  float: left;
+row, tile, building, number {
+  display: block;
 }
 
-.tilePart:nth-child(1) {
-  transform: rotate(-30deg);
-  margin-left: 20%;
+tile {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  background: url(../images/Field.png);
+  background-size: cover;
+  display: inline-grid;
+  grid-template-columns: 14px 10px auto 10px 14px;
+  grid-template-rows: 48px auto 45px;
+  grid-template-areas:
+    'top0 road1 top1 road2 top2'
+    'road0 . num . road3'
+    'bottom0 road5 bottom1 road4 bottom2'
 }
 
-.tilePart:nth-child(2) {
-  margin-left: -58%;
-  transform: rotate(30deg);
+number {
+  display: inline-block;
+  justify-self: center;
+  align-self: center;
+  background: white;
+  border-radius: 15px;
+  padding: 15px;
+  font-weight: bold;
+  grid-area: num;
 }
 
-.tilePart:nth-child(3) {
-  margin-left: -57.5%;
+building, road {
+  opacity: 0;
+}
+
+building.placed, road.placed {
+  opacity: 1;
+}
+
+building:hover, road:hover {
+  opacity: 0.8;
+}
+
+
+/* BUILDINGS */
+
+building {
+  height: 36px;
+  width: 28px;
+  z-index: 100;
+  transition: 0.1s;
+}
+
+building.city {
+  height: 39px;
+  width: 33px;
+}
+
+building.top {
+  align-self: end;
+  margin-top: -15px;
+}
+
+building.top.pos1 {
+  margin-top: -25px;
+}
+
+building.pos0 {
+  margin-left: -13px;
+}
+
+building.pos1 {
+  margin-left: -4px;
+}
+
+building.top.pos1 {
+  align-self: start;
+  justify-self: center;
+}
+
+building.bottom {
+  margin-top: -18px;
+}
+
+building.bottom.pos1 {
+  align-self: end;
+  justify-self: center;
+  margin-bottom: -12px;
+}
+
+/* ROADS */
+road {
+  height: 10px;
+  width: 80px;
+}
+
+road.pos0 {
   transform: rotate(90deg);
+  margin-left: -40px;
+  margin-top: 21px;
+  grid-area: road0;
+}
+
+road.pos1 {
+  transform: rotate(-30deg);
+  margin-left: -16px;
+  margin-top: 10px;
+  grid-area: road1;
+}
+
+road.pos2 {
+  transform: rotate(30deg);
+  margin-left: -52px;
+  margin-top: 10px;
+  grid-area: road2;
+}
+
+road.pos3 {
+  transform: rotate(90deg);
+  margin-left: -26px;
+  margin-top: 28px;
+  grid-area: road3;
+}
+
+road.pos4 {
+  transform: rotate(-30deg);
+  margin-left: -52px;
+  margin-top: 18px;
+  grid-area: road4;
+}
+
+road.pos5 {
+  transform: rotate(30deg);
+  margin-left: -15px;
+  margin-top: 19px;
+  grid-area: road5;
+}
+
+road.pos6 {
+  transform: rotate(90deg);
+  margin-left: -37px;
+  margin-top: 46px;
+  grid-area: road0;
+}
+
+
+/* TEXTURES */
+
+tile.grain {
+  background: url(../images/Field.png);
+  background-size: cover;
+}
+
+tile.wood {
+  background: url(../images/Forest.png);
+  background-size: cover;
+}
+
+tile.brick {
+  background: url(../images/Mesa.png);
+  background-size: cover;
+}
+
+tile.iron {
+  background: url(../images/Mountain.png);
+  background-size: cover;
+}
+
+tile.wool {
+  background: url(../images/Pasture.png);
+  background-size: cover;
+}
+
+tile.desert {
+  background: url(../images/Desert.png);
+  background-size: cover;
+}
+
+building.blue {
+  background: url(../images/blue-village.png);
+  background-size: cover;
+}
+
+building.red {
+  background: url(../images/red-village.png);
+  background-size: cover;
+}
+
+building.orange {
+  background: url(../images/orange-village.png);
+  background-size: cover;
+}
+
+building.white {
+  background: url(../images/white-village.png);
+  background-size: cover;
+}
+
+building.blue.city {
+  background: url(../images/blue-city.png);
+  background-size: cover;
+}
+
+building.red.city {
+  background: url(../images/red-city.png);
+  background-size: cover;
+}
+
+building.orange.city {
+  background: url(../images/orange-city.png);
+  background-size: cover;
+}
+
+building.white.city {
+  background: url(../images/white-city.png);
+  background-size: cover;
+}
+
+road.red {
+  background: red;
+}
+
+road.orange {
+  background: orange;
+}
+
+road.blue {
+  background: blue;
+}
+
+road.white {
+  background: white;
 }
