@@ -5,8 +5,10 @@ var websocket = require("ws")
 var port = process.argv[2]
 var app = express()
 
+app.use(express.static('public'))
+
 app.use("/", function(req, res) {
-  res.sendFile("client/index.html", {
+  res.sendFile("public/game.html", {
     root: "./"
   })
 })
