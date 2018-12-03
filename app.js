@@ -9,7 +9,7 @@ let app = express()
 app.use(express.static('public'))
 
 app.use("/", function(req, res) {
-  res.sendFile("client/index.html", {
+  res.sendFile("public/game.html", {
     root: "./"
   })
 })
@@ -45,15 +45,16 @@ wss.on("connection", function(ws) {
 
   lobbies[index] = lobby
 
-  ws.send(index)
-  console.log(lobbies)
+  ws.send(JSON.stringify(stripSockets(lobby)))
 
-   ws.on("message", function incoming(message) {
-     console.log("[LOG] " + message)
-
-
-
-   })
+  ws.on("message", function incoming(message) {
+    console.log("[LOG] " + message)
+  })
 })
+
+function stripSockets(lobby) {
+  delete lobby.players
+  return lobby
+}
 
 server.listen(port)
