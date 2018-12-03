@@ -123,6 +123,84 @@ Object.keys(game.tiles).forEach((tileName) => {
 
 // Actual Clientside
 
+//class Num extends HTMLElement {
+//  constructor(...args) {
+//    const self = super(...args)
+//    //let dom = this.attachShadow({mode: 'open'})
+//    //self.innerHTML = num
+//    //let number = document.createElement("span")
+//    //if (num != undefined) {
+//    //  number.innerHTML = num
+//    //} else {
+//    //  number.style.opacity = 0
+//    //}
+//    //dom.appendChild(number)
+//    return self
+//  }
+//}
+
+class BoardPiece extends HTMLElement {
+  constructor(myColor) {
+    super()
+    this.myColor = myColor
+
+    this.addEventListener("click", (e) => {this.click(e)})
+  }
+
+  place(color) {
+    this.className = this.constClassName + " placed " + color
+    this.placed = true
+  }
+}
+
+class Building extends BoardPiece {
+  constructor(num, location, firstTile, myColor) {
+    super(myColor)
+    this.constClassName = location + " pos" + num
+    this.className = this.constClassName + " " + myColor
+    this.style.gridArea = location+num
+    if (num==0 && !firstTile) {
+      this.style.opacity = 0;
+      this.style.zIndex = -100;
+    } else {
+      this.id = "building"+placedBuildings
+      placedBuildings++
+    }
+  }
+
+  click() {
+    if (this.placed) {
+      this.upgrade()
+    } else {
+      this.place(this.myColor)
+    }
+  }
+
+  upgrade() {
+    this.className += " city"
+  }
+}
+
+class Road extends BoardPiece {
+  constructor(num, location, myColor) {
+    super(myColor)
+    this.id = "road"+placedRoads
+    if (location == "bottom") {
+      num = num+3
+    }
+    this.constClassName = "pos" + num
+    this.className = this.constClassName + " " + myColor
+    placedRoads++
+  }
+
+  click() {
+    this.place(this.myColor)
+  }
+}
+
+customElements.define('catan-road', Road)
+customElements.define('catan-building', Building)
+
 let board = document.getElementById("board")
 let boardSize = [3,5] //min tiles per row, max tiles per row
 let tileHeight = 160
@@ -132,7 +210,9 @@ let placedTiles = 0
 let placedBuildings = 0
 let placedRoads = 0
 
-tiles.style.marginTop = rowDistance //compensate for marginBottom on rows
+let myColor = "red"
+
+board.style.marginTop = rowDistance //compensate for marginBottom on rows
 
 //Top half
 for (let i=boardSize[0]; i<boardSize[1]; i++) {
@@ -161,33 +241,32 @@ function Row(tiles, location, middleRow) {
     let gameTile = game.tiles[tileName]
     if (gameTile != undefined) {
       tile.className += gameTile.type
-      tile.appendChild(Num(gameTile.number))
+      //tile.appendChild(Num(gameTile.number))
     }
 
     tile.id = tileName
     tile.style.height = tileHeight+"px"
     tile.style.width = tileWidth+"px"
     tile.style.marginRight = 0
-    tile.addEventListener("click", (e) => {console.log(e.target.id)})
 
     for (let j=0; j<3; j++) {
-      tile.appendChild(Building(j, location, firstChild))
-      tile.appendChild(Road(j, location, lastChild))
+      tile.appendChild(new Building(j, location, firstChild, myColor))
+      tile.appendChild(new Road(j, location, myColor))
     }
 
     if (middleRow) {
       for(let j=0; j<3; j++) {
-        tile.appendChild(Building(j, "top", firstChild))
-        tile.appendChild(Road(j, "top"))
+        tile.appendChild(new Building(j, "top", firstChild, myColor))
+        tile.appendChild(new Road(j, "top", myColor))
       }
     }
 
     if (firstChild && location == "bottom" && !middleRow) {
-      tile.appendChild(Road(6, "top"))
+      tile.appendChild(new Road(6, "top", myColor))
     }
 
-    if (lastChild && location == "top") {
-      tile.appendChild(Road(3, location))
+    if (lastChild && location == "top", myColor) {
+      tile.appendChild(new Road(3, location))
     }
 
     if (firstChild) {
@@ -202,43 +281,6 @@ function Row(tiles, location, middleRow) {
   row.style.marginLeft = offset + "px"
   row.style.marginBottom = "-40px"
   return row
-}
-
-function Building(num, location, firstChild) {
-  let building = document.createElement("building")
-  building.className = location + " pos" + num
-  building.className += " " + myColor
-  building.style.gridArea = location+num
-  if (num==0 && !firstChild) {
-    building.style.opacity = 0;
-    building.style.zIndex = -100;
-  } else {
-    building.id = "building"+placedBuildings
-    placedBuildings++
-  }
-  return building
-}
-
-function Road(num, location, lastChild) {
-  let road = document.createElement("road")
-  road.id = "road"+placedRoads
-  if (location == "bottom") {
-    num = num+3
-  }
-  road.className = "pos" + num
-  road.className += " " + myColor
-  placedRoads++
-  return road
-}
-
-function Num(num) {
-  let number = document.createElement("number")
-  if (num != undefined) {
-    number.innerHTML = num
-  } else {
-    number.style.opacity = 0
-  }
-  return number
 }
 
 // function showRoads(i) {

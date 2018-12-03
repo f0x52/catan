@@ -24,7 +24,7 @@ a {
   display: inline-block;
 }
 
-row, tile, building, number {
+row, tile, catan-building, number {
   display: block;
 }
 
@@ -53,114 +53,117 @@ number {
   grid-area: num;
 }
 
-building, road {
+catan-building, catan-road {
   opacity: 0;
 }
 
-building.placed, road.placed {
+catan-building.placed, catan-road.placed {
   opacity: 1;
 }
 
-building:hover, road:hover {
+catan-building:hover, catan-road:hover {
   opacity: 0.8;
 }
 
+catan-building.placed:hover {
+  opacity: 1;
+}
 
 /* BUILDINGS */
 
-building {
+catan-building {
   height: 36px;
   width: 28px;
   z-index: 100;
   transition: 0.1s;
 }
 
-building.city {
+catan-building.city {
   height: 39px;
   width: 33px;
 }
 
-building.top {
+catan-building.top {
   align-self: end;
   margin-top: -15px;
 }
 
-building.top.pos1 {
+catan-building.top.pos1 {
   margin-top: -25px;
 }
 
-building.pos0 {
+catan-building.pos0 {
   margin-left: -13px;
 }
 
-building.pos1 {
+catan-building.pos1 {
   margin-left: -4px;
 }
 
-building.top.pos1 {
+catan-building.top.pos1 {
   align-self: start;
   justify-self: center;
 }
 
-building.bottom {
+catan-building.bottom {
   margin-top: -18px;
 }
 
-building.bottom.pos1 {
+catan-building.bottom.pos1 {
   align-self: end;
   justify-self: center;
   margin-bottom: -12px;
 }
 
 /* ROADS */
-road {
+catan-road {
   height: 10px;
   width: 80px;
 }
 
-road.pos0 {
+catan-road.pos0 {
   transform: rotate(90deg);
   margin-left: -40px;
   margin-top: 21px;
   grid-area: road0;
 }
 
-road.pos1 {
+catan-road.pos1 {
   transform: rotate(-30deg);
   margin-left: -16px;
   margin-top: 10px;
   grid-area: road1;
 }
 
-road.pos2 {
+catan-road.pos2 {
   transform: rotate(30deg);
   margin-left: -52px;
   margin-top: 10px;
   grid-area: road2;
 }
 
-road.pos3 {
+catan-road.pos3 {
   transform: rotate(90deg);
   margin-left: -26px;
   margin-top: 28px;
   grid-area: road3;
 }
 
-road.pos4 {
+catan-road.pos4 {
   transform: rotate(-30deg);
   margin-left: -52px;
   margin-top: 18px;
   grid-area: road4;
 }
 
-road.pos5 {
+catan-road.pos5 {
   transform: rotate(30deg);
   margin-left: -15px;
   margin-top: 19px;
   grid-area: road5;
 }
 
-road.pos6 {
+catan-road.pos6 {
   transform: rotate(90deg);
   margin-left: -37px;
   margin-top: 46px;
@@ -200,58 +203,58 @@ tile.desert {
   background-size: cover;
 }
 
-building.blue {
+catan-building.blue {
   background: url(../images/blue-village.png);
   background-size: cover;
 }
 
-building.red {
+catan-building.red {
   background: url(../images/red-village.png);
   background-size: cover;
 }
 
-building.orange {
+catan-building.orange {
   background: url(../images/orange-village.png);
   background-size: cover;
 }
 
-building.white {
+catan-building.white {
   background: url(../images/white-village.png);
   background-size: cover;
 }
 
-building.blue.city {
+catan-building.blue.city {
   background: url(../images/blue-city.png);
   background-size: cover;
 }
 
-building.red.city {
+catan-building.red.city {
   background: url(../images/red-city.png);
   background-size: cover;
 }
 
-building.orange.city {
+catan-building.orange.city {
   background: url(../images/orange-city.png);
   background-size: cover;
 }
 
-building.white.city {
+catan-building.white.city {
   background: url(../images/white-city.png);
   background-size: cover;
 }
 
-road.red {
+catan-road.red {
   background: red;
 }
 
-road.orange {
+catan-road.orange {
   background: orange;
 }
 
-road.blue {
+catan-road.blue {
   background: blue;
 }
 
-road.white {
+catan-road.white {
   background: white;
 }
