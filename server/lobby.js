@@ -1,6 +1,6 @@
 function createLobby(){
 
-  let board = require("./server/gameBoard.js")
+  let board = require("./gameBoard.js")
 
   /**
    * Randomize array element order in-place.
