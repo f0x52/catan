@@ -1,41 +1,139 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var express = require("express")
+var http = require("http")
+var websocket = require("ws")
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var port = process.argv[2]
+var app = express()
 
-var app = express();
+app.use("/", function(req, res) {
+  res.sendFile("client/index.html", {
+    root: "./"
+  })
+})
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+var server = http.createServer(app)
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+const wss = new websocket.Server({
+  server
+})
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+let colors = ["red", "blue", "white", "orange"]
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+let connections = []
+let players = []
+let currentPlayer = 0
+let gameStart = false
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+wss.on("connection", function(ws) {
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+  let playerNum
 
-module.exports = app;
+  var client = {
+    socket: ws,
+    color: "",
+    number: 0,
+    myTurn: false,
+    ready: false
+  }
+  players.push(client)
+
+  if (connections.length < 4) {
+    connections.push(ws)
+    client.number = connections.length
+    client.color = colors[client.number-1]
+    ws.send(client.color)
+  } else {
+    ws.send("Lobby is full, please try again later")
+    ws.close()
+    return
+  }
+  //connections.push(ws)
+  //let's slow down the server response time a bit to make the change visible on the client side
+  //setTimeout(function() {
+  //    console.log("Connection state: "+ ws.readyState)
+  //    ws.send("Thanks for the message. --Your server.")
+  //    //ws.close()
+  //    console.log("Connection state: "+ ws.readyState)
+  //}, 2000)
+
+  //ws.send("Welcome to catan lite")
+
+  ws.on("message", function incoming(message) {
+    console.log("[LOG] " + message)
+
+    if (message == "Button pressed") {
+
+      for (let i = 0; i < connections.length; i++) {
+        connections[i].send("Player " + client.number + " has pressed the button")
+      }
+    }
+
+    if (message == "ready" && gameStart == false) {
+      client.ready = true
+      var message = "Waiting for "
+      for (let i = 0; i < players.length; i++) {
+        if (players[i].ready == false) {
+          message += players[i].number + ", "
+        }
+      }
+      if (message == "Waiting for ") {
+        for (let i = 0; i < players.length; i++) {
+          players[i].socket.send("Game is starting")
+        }
+
+        let rand = Math.floor(Math.random() * 4);
+        players[rand].myTurn = true
+        gameStart = true
+        players[rand].socket.send("its your turn")
+
+      } else {
+        ws.send(message)
+      }
+    }
+
+    if (message == "connections") {
+      ws.send(connections.length)
+    }
+
+    if (message == "next turn") {
+
+      if (gameStart == false) {
+
+        client.socket.send("Game has not started yet, press ready to begin")
+
+      } else if (client.myTurn == false && gameStart == true) {
+
+        client.socket.send("Sorry, not your turn")
+
+      } else if (client.myTurn == true && gameStart == true) {
+
+
+        let nextPlayer = client.number + 1
+        if (nextPlayer > players.length) {
+          nextPlayer = 1
+        }
+        client.socket.send("giving turn to " + players[nextPlayer-1].color)
+
+        for (let i = 0; i < players.length; i++) {
+          if (players[i].number == nextPlayer) {
+            players[i].myTurn = true
+            players[i].socket.send("It's now your turn")
+          } else {
+            players[i].myTurn = false
+            players[i].socket.send("it's now " + players[nextPlayer-1].color + "'s turn")
+          }
+        }
+
+
+      }
+    }
+
+  })
+
+
+
+
+
+})
+
+server.listen(port)
