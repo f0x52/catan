@@ -23,6 +23,13 @@ const wss = new websocket.Server({
 let lobbies = []
 
 wss.on("connection", function(ws) {
+  ws.ssend = function(message) {
+    if (this.readyState != 1) {
+      return 0
+    }
+    let json = JSON.stringify(message)
+    ws.send(json)
+  }
   let lobby
   let index = lobbies.length
 
@@ -35,26 +42,34 @@ wss.on("connection", function(ws) {
     lobby = createLobby()
   }
 
+  let playerID = lobby.players.length
+
   let player = {
+    id: playerID,
     socket: ws,
     ready: false,
-    color: lobby.colors[lobby.players.length]
+    color: lobby.colors[playerID]
   }
 
   lobby.players.push(player)
 
   lobbies[index] = lobby
 
-  ws.send(JSON.stringify(stripSockets(lobby)))
+  lobby.action = "board"
+  lobby.playerID = playerID
+  ws.ssend(lobby)
 
   ws.on("message", function incoming(message) {
     console.log("[LOG] " + message)
+    let action = JSON.parse(message)
+    let lobby = lobbies[index]
+
+    if (action.action == "build" || action.action == "upgrade") {
+      lobby.players.forEach((player) => {
+        player.socket.ssend(action)
+      })
+    }
   })
 })
-
-function stripSockets(lobby) {
-  delete lobby.players
-  return lobby
-}
 
 server.listen(port)

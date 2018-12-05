@@ -1,8 +1,18 @@
 let socket = new WebSocket("ws://localhost:3000")
+let myColor = "red"
 
 socket.onmessage = function(event) {
-  let game = JSON.parse(event.data)
-  drawBoard(game.board)
+  let data = JSON.parse(event.data)
+  console.log(data)
+  if (data.action == "board") {
+    let game = JSON.parse(event.data)
+    myColor = game.colors[game.playerID]
+    drawBoard(game.board)
+  } else if (data.action == "build") {
+    document.getElementById(data.what).place(data.color, true)
+  } else if (data.action == "upgrade") {
+    document.getElementById(data.what).upgrade(true)
+  }
 }
 
 let placedTiles = 0
@@ -17,9 +27,19 @@ class BoardPiece extends HTMLElement {
     this.addEventListener("click", (e) => {this.click(e)})
   }
 
-  place(color) {
+  place(color, proxied) {
     this.className = this.constClassName + " placed " + color
     this.placed = true
+    if (proxied) {
+      // Action comes from WS instead of the user
+      return
+    }
+    let obj = {
+      action: "build",
+      what: this.id,
+      color: color
+    }
+    socket.send(JSON.stringify(obj))
   }
 }
 
@@ -46,8 +66,18 @@ class Building extends BoardPiece {
     }
   }
 
-  upgrade() {
+  upgrade(proxied) {
     this.className += " city"
+    if (proxied) {
+      // Action comes from WS instead of the user
+      return
+    }
+    let obj = {
+      action: "upgrade",
+      what: this.id,
+      proxy: true
+    }
+    socket.send(JSON.stringify(obj))
   }
 }
 
@@ -78,7 +108,6 @@ function drawBoard(game) {
   let tileWidth = Math.sqrt(3)*tileHeight/2 * (27/26) // texture isn't a perfect hexagon
   let rowDistance = 0//"-"+tileHeight/4+"px"
 
-  let myColor = "red"
 
   board.style.marginTop = rowDistance //compensate for marginBottom on rows
 
