@@ -1,5 +1,5 @@
-# Catan
-
+r# Catan
+```
 board : {
   buildings: [
     {
@@ -30,6 +30,69 @@ board : {
     }
   }
 }
+```
+
+
+```javascript
+
+let lobby = {
+  players: [
+    {
+      "websocket": -,
+      "color": "red"
+    },
+    {
+      "websocket": -,
+      "color": "red"
+    }
+  ]
+}
+
+```
+
+Available Events over websocket
+```JavaScript
+// Building
+{
+  action: "build",
+  location: "road1",
+  color: "red"
+}
+
+// Upgrade village
+{
+  action: "upgrade",
+  location: "city1"
+}
+
+// Pass turn
+{
+  action: "next"
+}
+
+// Dice roll
+{
+  action: "roll"
+}
+// returns
+{
+  action: "roll",
+  number: 7
+}
+
+// Resources
+// Updates after every roll, build
+{
+  action: "resources",
+  resources: {
+    wood: 1,
+    brick: 2,
+    grain: 3,
+    wool: 2,
+    iron: 0
+  }
+}
+```
 
 dobbelsteen
  getal
