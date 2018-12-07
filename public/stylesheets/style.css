@@ -1,5 +1,3 @@
-@import url("https://f.0x52.eu/css/rainbow.css");
-
 html {
   background: url(../images/bg.png);
   background-size: cover;
@@ -283,4 +281,40 @@ catan-road.blue {
 
 catan-road.white {
   background: white;
+}
+
+/* RAINBOW */
+@keyframes rainbow {
+  0% { /* red */
+    color: #e81d1d;
+    border-color: #e81d1d;
+  }
+  14% { /* orange */
+    color: #e8b71d;
+    border-color: #e8b71d;
+  }
+  28% { /* yellow */
+    color: #e3e81d;
+    border-color: #e3e81d;
+  }
+  42% { /* green */
+    color: #1de840;
+    border-color: #1de840;
+  }
+  57% { /* cyan */
+    color: #1ddde8;
+    border-color: #1ddde8;
+  }
+  71% { /* blue */
+    color: #2b1de8;
+    border-color: #2b1de8;
+  }
+  85% { /* purple */
+    color: #dd00f3;
+    border-color: #dd00f3;
+  }
+  100% { /* red */
+    color: #e81d1d;
+    border-color: #e81d1d;
+  }
 }
