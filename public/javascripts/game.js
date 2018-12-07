@@ -4,6 +4,23 @@ let myColor = "red"
 socket.onmessage = function(event) {
   let data = JSON.parse(event.data)
   console.log(data)
+
+  document.getElementById('ready').addEventListener("click", function() {
+
+    let data = {
+      action: "ready pressed"
+    }
+    socket.send(JSON.stringify(data))
+  })
+
+  document.getElementById('next').addEventListener("click", function() {
+
+    let data = {
+      action: "next pressed"
+    }
+    socket.send(JSON.stringify(data))
+  })
+
   if (data.action == "board") {
     let game = JSON.parse(event.data)
     myColor = game.colors[game.playerID]

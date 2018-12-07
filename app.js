@@ -61,6 +61,7 @@ wss.on("connection", function(ws) {
 
   ws.on("message", function incoming(message) {
     console.log("[LOG] " + message)
+
     let action = JSON.parse(message)
     let lobby = lobbies[index]
 
@@ -69,6 +70,33 @@ wss.on("connection", function(ws) {
         player.socket.ssend(action)
       })
     }
+
+    if (action.action == "next pressed" && lobby.started == true && player.id == lobby.currentPlayer) {
+      lobby.currentPlayer ++
+      if(lobby.currentPlayer == 4){ lobby.currentPlayer = 0}
+      console.log("Turn given to: " + lobby.currentPlayer)
+    }
+
+    if (action.action == "ready pressed") {
+      player.ready = true
+      let tempTruth = true
+
+      for(let i = 0; i < lobby.players.length; i++){
+        if(lobby.players[i].ready == false){
+          tempTruth = false
+        }
+      }
+      lobby.started = tempTruth
+
+      if(lobby.started == true){
+        let randomnumber = Math.floor(Math.random() * 4)
+        lobby.currentPlayer = randomnumber
+        console.log(randomnumber)
+      }
+
+      console.log(lobby.started)
+    }
+
   })
 })
 
