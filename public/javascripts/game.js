@@ -38,7 +38,7 @@ socket.onmessage = function(event) {
   } else if (data.action == "upgrade") {
     document.getElementById(data.what).upgrade(true)
   } else if (data.action == "chat") {
-    let line = document.createElement("span")
+    let line = document.createElement("div")
     let from = document.createElement("b")
     from.textContent = data.from + ": "
     let msg = document.createElement("span")
@@ -46,14 +46,19 @@ socket.onmessage = function(event) {
     line.appendChild(from)
     line.appendChild(msg)
     chat.appendChild(line)
+    chat.scrollTop = chat.scrollHeight;
   }
 }
 
 document.getElementById("send").addEventListener("keydown", (e) => {
+  if (e.key != "Enter") {
+    return
+  }
   socket.send(JSON.stringify({
     action: "chat",
     msg: e.target.value
   }))
+  e.target.value = ""
 })
 
 let placedTiles = 0

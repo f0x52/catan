@@ -53,6 +53,26 @@ number {
   grid-area: num;
 }
 
+.message {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+}
+
+#chat {
+  flex: 1 1 auto;
+  height: 300px;
+  overflow-y: auto;
+}
+
+#send {
+  flex: 0 0 auto;
+}
+
+.chat div span {
+  max-width: 200px;
+}
+
 catan-building, catan-road {
   opacity: 0;
 }
