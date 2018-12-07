@@ -70,7 +70,7 @@ function createLobby(){
   let lobby = {
     started: false,
     players: [],
-    currentPlayer: 0,
+    currentPlayer: -1,
     board: board,
     colors: colors
   }

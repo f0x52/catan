@@ -9,25 +9,35 @@ Number.prototype.mod = function(n) {
 
 let chat = document.getElementById("chat")
 
+document.getElementById('ready').addEventListener("mouseup", function() {
+
+  let data = {
+    action: "ready pressed"
+  }
+  socket.send(JSON.stringify(data))
+})
+
+document.getElementById('next').addEventListener("mouseup", function() {
+
+  let data = {
+    action: "next pressed"
+  }
+  socket.send(JSON.stringify(data))
+})
+
+document.getElementById('roll').addEventListener("mouseup", function() {
+  console.log("rollimg")
+  let data = {
+    action: "dice rolled"
+  }
+  socket.send(JSON.stringify(data))
+})
+
 socket.onmessage = function(event) {
   let data = JSON.parse(event.data)
   console.log(data)
 
-  document.getElementById('ready').addEventListener("click", function() {
 
-    let data = {
-      action: "ready pressed"
-    }
-    socket.send(JSON.stringify(data))
-  })
-
-  document.getElementById('next').addEventListener("click", function() {
-
-    let data = {
-      action: "next pressed"
-    }
-    socket.send(JSON.stringify(data))
-  })
 
   if (data.action == "board") {
     game = JSON.parse(event.data)
