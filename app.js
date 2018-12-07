@@ -59,6 +59,13 @@ wss.on("connection", function(ws) {
   lobby.playerID = playerID
   ws.ssend(lobby)
 
+  let msg = {
+    action: "chat",
+    from: "Catan",
+    msg: "Welcome to lobby "+lobbies.length
+  }
+  ws.ssend(msg)
+
   ws.on("message", function incoming(message) {
     console.log("[LOG] " + message)
 
@@ -66,6 +73,11 @@ wss.on("connection", function(ws) {
     let lobby = lobbies[index]
 
     if (action.action == "build" || action.action == "upgrade") {
+      lobby.players.forEach((player) => {
+        player.socket.ssend(action)
+      })
+    } else if (action.action == "chat") {
+      action.from = "player"+playerID
       lobby.players.forEach((player) => {
         player.socket.ssend(action)
       })

@@ -5,6 +5,7 @@ dependencies:
   express: 4.16.4
   http-errors: 1.6.3
   morgan: 1.9.1
+  ws: 6.1.2
 packages:
   /accepts/1.3.5:
     dependencies:
@@ -19,6 +20,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-ml9pkFGx5wczKPKgCJaLZOopVdI=
+  /async-limiter/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-jp/uFnooOiO+L211eZOoSyzpOITMXx1rBITauYykG3BRYPu8h0UcxsPNB04RR5vo4Tyz3+ay17tR6JVf9qzYWg==
   /basic-auth/2.0.1:
     dependencies:
       safe-buffer: 5.1.2
@@ -411,6 +416,12 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
+  /ws/6.1.2:
+    dependencies:
+      async-limiter: 1.0.0
+    dev: false
+    resolution:
+      integrity: sha512-rfUqzvz0WxmSXtJpPMX2EeASXabOrSMk1ruMOV3JBTBjo4ac2lDjGGsbQSyxj8Odhw5fBib8ZKEjDNvgouNKYw==
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
@@ -421,3 +432,4 @@ specifiers:
   express: ~4.16.0
   http-errors: ~1.6.2
   morgan: ~1.9.0
+  ws: ^6.1.2

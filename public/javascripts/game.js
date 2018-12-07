@@ -1,5 +1,13 @@
 let socket = new WebSocket("ws://localhost:3000")
 let myColor = "red"
+let game
+
+// Modulo that works with negative numbers
+Number.prototype.mod = function(n) {
+    return ((this%n)+n)%n;
+};
+
+let chat = document.getElementById("chat")
 
 socket.onmessage = function(event) {
   let data = JSON.parse(event.data)
@@ -22,19 +30,36 @@ socket.onmessage = function(event) {
   })
 
   if (data.action == "board") {
-    let game = JSON.parse(event.data)
+    game = JSON.parse(event.data)
     myColor = game.colors[game.playerID]
     drawBoard(game.board)
   } else if (data.action == "build") {
     document.getElementById(data.what).place(data.color, true)
   } else if (data.action == "upgrade") {
     document.getElementById(data.what).upgrade(true)
+  } else if (data.action == "chat") {
+    let line = document.createElement("span")
+    let from = document.createElement("b")
+    from.textContent = data.from + ": "
+    let msg = document.createElement("span")
+    msg.textContent = data.msg
+    line.appendChild(from)
+    line.appendChild(msg)
+    chat.appendChild(line)
   }
 }
+
+document.getElementById("send").addEventListener("keydown", (e) => {
+  socket.send(JSON.stringify({
+    action: "chat",
+    msg: e.target.value
+  }))
+})
 
 let placedTiles = 0
 let placedBuildings = 0
 let placedRoads = 0
+let noBuild = []
 
 class BoardPiece extends HTMLElement {
   constructor(myColor) {
@@ -47,6 +72,8 @@ class BoardPiece extends HTMLElement {
   place(color, proxied) {
     this.className = this.constClassName + " placed " + color
     this.placed = true
+    this.color = color
+
     if (proxied) {
       // Action comes from WS instead of the user
       return
@@ -80,10 +107,30 @@ class Building extends BoardPiece {
       this.upgrade()
     } else {
       this.place(this.myColor)
+      //Update no-place sites
+      let buildingNum = this.id.substr(8) //remove building prefix
+      console.log(buildingNum)
+      Object.keys(game.board.tiles).forEach((tileName) => {
+        let tile = game.board.tiles[tileName]
+
+        for(let i=0; i<tile.buildings.length; i++) {
+          if (tile.buildings[i] == buildingNum) {
+            noBuild.push(tile.buildings[i])
+            noBuild.push(tile.buildings[(i+1)%6])
+            noBuild.push(tile.buildings[(i-1).mod(6)])
+            console.log((i-1).mod(6))
+            console.log(noBuild)
+            break
+          }
+        }
+      })
     }
   }
 
   upgrade(proxied) {
+    if (this.color != myColor) {
+      return
+    }
     this.className += " city"
     if (proxied) {
       // Action comes from WS instead of the user
