@@ -42,6 +42,9 @@ socket.onmessage = function(event) {
     let from = document.createElement("b")
     from.textContent = data.from + ": "
     let msg = document.createElement("span")
+    if (data.msg.startsWith("nyan")) {
+      msg.className = "nyan"
+    }
     msg.textContent = data.msg
     line.appendChild(from)
     line.appendChild(msg)
@@ -54,9 +57,11 @@ document.getElementById("send").addEventListener("keydown", (e) => {
   if (e.key != "Enter") {
     return
   }
+  let msg = chatParse(e.target.value)
+
   socket.send(JSON.stringify({
     action: "chat",
-    msg: e.target.value
+    msg: msg
   }))
   e.target.value = ""
 })
