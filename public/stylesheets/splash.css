@@ -1,5 +1,29 @@
 .splash{
+  position: relative;
   background: url(../images/new-splash.png);
   background-size: cover;
-  height: 2500px;
+  align-self: center;
+  display: inline-block;
+  width: 700px;
+  height: 700px;
+}
+
+body{
+  background-color: #1d7fc6;
+  display: flex;
+  justify-content: center;
+}
+
+.buttons{
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+img{
+
+  height: 40px;
+
 }
