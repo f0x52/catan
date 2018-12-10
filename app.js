@@ -56,7 +56,7 @@ wss.on("connection", function(ws) {
     ready: false,
     color: lobby.colors[playerID],
     rolled: false,
-    resources: {brick: 0, grain: 0, ore: 0, sheep: 0, wood: 0}
+    resources: {brick: 0, grain: 0, iron: 0, wool: 0, wood: 0}
   }
 
   lobby.players.push(player)
@@ -148,22 +148,19 @@ wss.on("connection", function(ws) {
             let building = lobby.buildings[number]
 
             if(building == undefined || building.color == undefined){
-              return
-            }
 
-            lobby.players.forEach((player) => {
-              callout(JSON.stringify(player.resources), true)
-              if(player.color == building.color){
-                player.resources[currentTile.type]++
-                if(building.type == "city"){
+            }else{
+
+              lobby.players.forEach((player) => {
+                if(player.color == building.color){
                   player.resources[currentTile.type]++
+                  if(building.type == "city"){
+                    player.resources[currentTile.type]++
+                  }
                 }
-              }
-            })
-
+              })
+            }
           })
-
-
         }
       })
 
@@ -173,7 +170,7 @@ wss.on("connection", function(ws) {
       //})
 
       callout(player.color + " rolled "+ total, true)
-      callout("garbage", true)
+      callout(JSON.stringify(player.resources), false)
 
     }
 
