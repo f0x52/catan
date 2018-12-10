@@ -283,6 +283,111 @@ catan-road.white {
   background: white;
 }
 
+number.num2{
+  background: url(../images/coin-2.png);
+  background-size: cover;
+}
+
+number.num3{
+  background: url(../images/coin-3.png);
+  background-size: cover;
+}
+
+number.num4{
+  background: url(../images/coin-4.png);
+  background-size: cover;
+}
+
+number.num5{
+  background: url(../images/coin-5.png);
+  background-size: cover;
+}
+
+number.num6{
+  background: url(../images/coin-6.png);
+  background-size: cover;
+}
+
+number.num8{
+  background: url(../images/coin-8.png);
+  background-size: cover;
+}
+
+number.num9{
+  background: url(../images/coin-9.png);
+  background-size: cover;
+}
+
+number.num10{
+  background: url(../images/coin-10.png);
+  background-size: cover;
+}
+
+number.num11{
+  background: url(../images/coin-11.png);
+  background-size: cover;
+}
+
+number.num12{
+  background: url(../images/coin-12.png);
+  background-size: cover;
+}
+
+dice.num1{
+  background: url(../images/dice-1.png);
+  background-size: cover;
+}
+
+dice.num2{
+  background: url(../images/dice-2.png);
+  background-size: cover;
+}
+
+dice.num3{
+  background: url(../images/dice-3.png);
+  background-size: cover;
+}
+
+dice.num4{
+  background: url(../images/dice-4.png);
+  background-size: cover;
+}
+
+dice.num5{
+  background: url(../images/dice-5.png);
+  background-size: cover;
+}
+
+dice.num6{
+  background: url(../images/dice-6.png);
+  background-size: cover;
+}
+
+card.brick{
+  background: url(../images/card-brick.png);
+  background-size: cover;
+}
+
+card.grain{
+  background: url(../images/card-grain.png);
+  background-size: cover;
+}
+
+card.ore{
+  background: url(../images/card-ore.png);
+  background-size: cover;
+}
+
+card.sheep{
+  background: url(../images/card-sheep.png);
+  background-size: cover;
+}
+
+card.wood{
+  background: url(../images/card-wood.png);
+  background-size: cover;
+}
+
 /* RAINBOW */
 @keyframes rainbow {
   0% { /* red */
