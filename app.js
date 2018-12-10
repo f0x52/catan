@@ -53,7 +53,7 @@ wss.on("connection", function(ws) {
   let player = {
     id: playerID,
     socket: ws,
-    ready: false,
+    ready: true, // TODO: set to false!
     color: lobby.colors[playerID],
     rolled: false,
     resources: {brick: 0, grain: 0, iron: 0, wool: 0, wood: 0}
@@ -129,21 +129,15 @@ wss.on("connection", function(ws) {
     }
 
     if (action.action == "dice rolled" && player.id == lobby.currentPlayer && !player.rolled) {
-
-
-
       console.log("dice rolled")
       player.rolled = true
       let dice1 = Math.floor((Math.random() * 6)+1)
       let dice2 = Math.floor((Math.random() * 6)+1)
       let total = dice1+dice2
 
-
-
       Object.keys(lobby.board.tiles).forEach((tileName) => {
         let currentTile = lobby.board.tiles[tileName]
         if(currentTile.number == total){
-
           currentTile.buildings.forEach((number) => {
             let building = lobby.buildings[number]
 
@@ -162,6 +156,9 @@ wss.on("connection", function(ws) {
             }
           })
         }
+      })
+      lobby.players.forEach((player) => {
+        console.log(player.resources)
       })
 
 
