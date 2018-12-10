@@ -27,7 +27,6 @@ Number.prototype.mod = function(n) {
     return ((this%n)+n)%n;
 };
 
-
 wss.on("connection", function(ws) {
   ws.ssend = function(message) {
     if (this.readyState != 1) {
@@ -157,6 +156,7 @@ wss.on("connection", function(ws) {
           })
         }
       })
+
       lobby.players.forEach((player) => {
         player.socket.ssend({
           action: "chat",
@@ -167,18 +167,12 @@ wss.on("connection", function(ws) {
         )
       })
 
-
-      //Object.keys(lobby.board.tiles).forEach(function (tile) {
-	    //     console.log(tile.number)
-      //})
-
       callout(player.color + " rolled "+ total, true)
       callout(JSON.stringify(player.resources), false)
-
     }
 
     if (action.action == "next pressed" && lobby.started && player.id == lobby.currentPlayer && player.rolled) {
-      lobby.currentPlayer ++
+      lobby.currentPlayer++
       player.rolled = false
       if(lobby.currentPlayer == 4){ lobby.currentPlayer = 0}
       console.log("Turn given to: " + lobby.currentPlayer)
@@ -190,7 +184,6 @@ wss.on("connection", function(ws) {
       player.ready = true
 
       if(lobby.players.length==4){
-
         let tempTruth = true
 
         for(let i = 0; i < 4; i++){
@@ -205,13 +198,10 @@ wss.on("connection", function(ws) {
         if(lobby.started){
           let randomnumber = Math.floor(Math.random() * 4)
           lobby.currentPlayer = randomnumber
-
           callout(lobby.players[lobby.currentPlayer].color + " " + lobby.currentPlayer + " has the turn", true)
         }
-      }else{
-
+      } else{
         callout("Please wait till the lobby has 4 players (" + lobby.players.length + "/4)", true)
-
       }
     }
   })
