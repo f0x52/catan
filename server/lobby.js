@@ -49,17 +49,22 @@ function createLobby(){
     }
   }
   shuffleArray(numbers)
-  let pos = 0
+  console.log(numbers, numbers.length)
+  let tileNum = 0
   let numPos = 0
   let usedNumbers = {}
   Object.keys(board.tiles).forEach((tileName) => {
     let currentTile = board.tiles[tileName]
-    currentTile.type = resources[pos]
-    if (resources[pos] != "desert") {
+    currentTile.type = resources[tileNum]
+    if (currentTile.type != "desert") {
       currentTile.number = numbers[numPos]
       numPos++
+    } else {
+      currentTile.number = undefined
+      console.log("DESERT", numbers[numPos])
     }
-    pos++
+    tileNum++
+    console.log(tileName, currentTile.type, currentTile.number)
   })
 
   let colors = ["red", "blue", "white", "orange"]
