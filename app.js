@@ -49,7 +49,8 @@ wss.on("connection", function(ws) {
     socket: ws,
     ready: false,
     color: lobby.colors[playerID],
-    rolled: false
+    rolled: false,
+    resources: {brick: 0, grain: 0, ore: 0, sheep: 0, wood: 0}
   }
 
   lobby.players.push(player)
@@ -73,6 +74,23 @@ wss.on("connection", function(ws) {
     let action = JSON.parse(message)
     let lobby = lobbies[index]
 
+    function callout(msg, all){
+
+      let message = {
+        action: "chat",
+        from: "Catan",
+        msg: msg
+      }
+
+      if(all){
+        lobby.players.forEach((player) => {
+          player.socket.ssend(message)
+        })
+      }else{
+        player.socket.ssend(message)
+      }
+    }
+
     if (action.action == "build" || action.action == "upgrade") {
       lobby.players.forEach((player) => {
         player.socket.ssend(action)
@@ -88,18 +106,25 @@ wss.on("connection", function(ws) {
     if (action.action == "dice rolled" && player.id == lobby.currentPlayer && !player.rolled) {
       console.log("dice rolled")
       player.rolled = true
-      let dice1 = Math.floor((Math.random() * 7)+1)
-      let dice2 = Math.floor((Math.random() * 7)+1)
+      let dice1 = Math.floor((Math.random() * 6)+1)
+      let dice2 = Math.floor((Math.random() * 6)+1)
       let total = dice1+dice2
 
-      let diceData = {
-        action: "chat",
-        from: "Catan",
-        msg: player.color + " rolled "+ total
-      }
-      lobby.players.forEach((player) => {
-        player.socket.ssend(diceData)
+
+
+      Object.keys(lobby.board.tiles).forEach((tileName) => {
+        let currentTile = lobby.board.tiles[tileName]
+        if(currentTile.number == total){
+          console.log(currentTile)
+        }
       })
+
+
+      //Object.keys(lobby.board.tiles).forEach(function (tile) {
+	    //     console.log(tile.number)
+      //})
+
+      callout(player.color + " rolled "+ total, true)
     }
 
     if (action.action == "next pressed" && lobby.started && player.id == lobby.currentPlayer && player.rolled) {
@@ -108,41 +133,35 @@ wss.on("connection", function(ws) {
       if(lobby.currentPlayer == 4){ lobby.currentPlayer = 0}
       console.log("Turn given to: " + lobby.currentPlayer)
 
-      let turnChange = {
-        action: "chat",
-        from: "Catan",
-        msg: lobby.players[lobby.currentPlayer].color + " " + lobby.currentPlayer + " has the turn"
-      }
-      lobby.players.forEach((player) => {
-        player.socket.ssend(turnChange)
-      })
+      callout(lobby.players[lobby.currentPlayer].color + " " + lobby.currentPlayer + " has the turn", true)
     }
 
-    if (action.action == "ready pressed") {
+    if (action.action == "ready pressed" && lobby.started == false) {
       player.ready = true
-      let tempTruth = true
 
-      for(let i = 0; i < 4; i++){
-        if(lobby.players[i].ready == false){
-          tempTruth = false
+      if(lobby.players.length==4){
+
+        let tempTruth = true
+
+        for(let i = 0; i < 4; i++){
+          if(lobby.players[i].ready == false){
+            tempTruth = false
+            //callout("Waiting for remaining players (" + i + "/4)", false)
+            break
+          }
         }
-      }
-      lobby.started = tempTruth
+        lobby.started = tempTruth
 
-      if(lobby.started){
-        let randomnumber = Math.floor(Math.random() * 4)
-        lobby.currentPlayer = randomnumber
-        console.log(randomnumber)
+        if(lobby.started){
+          let randomnumber = Math.floor(Math.random() * 4)
+          lobby.currentPlayer = randomnumber
 
-        let gameStart = {
-          action: "chat",
-          from: "Catan",
-          msg: lobby.players[lobby.currentPlayer].color + " " + lobby.currentPlayer + " has the turn"
+          callout(lobby.players[lobby.currentPlayer].color + " " + lobby.currentPlayer + " has the turn", true)
         }
+      }else{
 
-        lobby.players.forEach((player) => {
-          player.socket.ssend(gameStart)
-        })
+        callout("Please wait till the lobby has 4 players (" + lobby.players.length + "/4)", true)
+
       }
     }
   })

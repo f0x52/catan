@@ -26,7 +26,6 @@ document.getElementById('next').addEventListener("mouseup", function() {
 })
 
 document.getElementById('roll').addEventListener("mouseup", function() {
-  console.log("rollimg")
   let data = {
     action: "dice rolled"
   }
@@ -123,6 +122,10 @@ class Building extends BoardPiece {
   }
 
   click() {
+
+    console.log(this.number + "\n" + game.currentPlayer)
+    //if (this.color == myColor && this.number == game.currentPlayer)
+
     if (this.placed) {
       this.upgrade()
     } else {
