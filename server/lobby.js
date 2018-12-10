@@ -71,7 +71,7 @@ function createLobby(){
     currentPlayer: -1,
     board: board,
     colors: colors,
-    noBuild: {}
+    buildings: {}
   }
 
   return lobby

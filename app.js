@@ -111,15 +111,15 @@ wss.on("connection", function(ws) {
 
           for (let i=0; i<tile.buildings.length; i++) {
             if (tile.buildings[i] == buildingNum) {
-              lobby.noBuild[tile.buildings[i]] = true
-              lobby.noBuild[tile.buildings[(i+1)%6]] = true
-              lobby.noBuild[tile.buildings[(i-1).mod(6)]] = true
+              lobby.buildings[tile.buildings[i]] = {type: "village", color: player.color}
+              lobby.buildings[tile.buildings[(i+1)%6]] = {}
+              lobby.buildings[tile.buildings[(i-1).mod(6)]] = {}
               break
             }
           }
         })
       }
-      console.log(lobby.noBuild)
+      console.log(lobby.buildings)
     } else if (action.action == "chat") {
       console.log("recv chat")
       action.from = "player"+playerID
@@ -129,6 +129,9 @@ wss.on("connection", function(ws) {
     }
 
     if (action.action == "dice rolled" && player.id == lobby.currentPlayer && !player.rolled) {
+
+
+
       console.log("dice rolled")
       player.rolled = true
       let dice1 = Math.floor((Math.random() * 6)+1)
@@ -140,7 +143,27 @@ wss.on("connection", function(ws) {
       Object.keys(lobby.board.tiles).forEach((tileName) => {
         let currentTile = lobby.board.tiles[tileName]
         if(currentTile.number == total){
-          console.log(currentTile)
+
+          currentTile.buildings.forEach((number) => {
+            let building = lobby.buildings[number]
+
+            if(building == undefined || building.color == undefined){
+              return
+            }
+
+            lobby.players.forEach((player) => {
+              callout(JSON.stringify(player.resources), true)
+              if(player.color == building.color){
+                player.resources[currentTile.type]++
+                if(building.type == "city"){
+                  player.resources[currentTile.type]++
+                }
+              }
+            })
+
+          })
+
+
         }
       })
 
@@ -150,6 +173,8 @@ wss.on("connection", function(ws) {
       //})
 
       callout(player.color + " rolled "+ total, true)
+      callout("garbage", true)
+
     }
 
     if (action.action == "next pressed" && lobby.started && player.id == lobby.currentPlayer && player.rolled) {
