@@ -16,8 +16,6 @@ function createLobby(){
       }
   }
 
-
-
   function initResources() {
     let distribution = {
       "wood": 4,
@@ -72,7 +70,8 @@ function createLobby(){
     players: [],
     currentPlayer: -1,
     board: board,
-    colors: colors
+    colors: colors,
+    noBuild: {}
   }
 
   return lobby

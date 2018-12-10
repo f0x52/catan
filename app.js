@@ -22,6 +22,12 @@ const wss = new websocket.Server({
 
 let lobbies = []
 
+// Modulo that works with negative numbers
+Number.prototype.mod = function(n) {
+    return ((this%n)+n)%n;
+};
+
+
 wss.on("connection", function(ws) {
   ws.ssend = function(message) {
     if (this.readyState != 1) {
@@ -95,6 +101,25 @@ wss.on("connection", function(ws) {
       lobby.players.forEach((player) => {
         player.socket.ssend(action)
       })
+
+      if (action.action == "build") {
+        //Update no-place sites
+        let buildingNum = action.what.substr(8) //remove building prefix
+        console.log("built", buildingNum)
+        Object.keys(lobby.board.tiles).forEach((tileName) => {
+          let tile = lobby.board.tiles[tileName]
+
+          for (let i=0; i<tile.buildings.length; i++) {
+            if (tile.buildings[i] == buildingNum) {
+              lobby.noBuild[tile.buildings[i]] = true
+              lobby.noBuild[tile.buildings[(i+1)%6]] = true
+              lobby.noBuild[tile.buildings[(i-1).mod(6)]] = true
+              break
+            }
+          }
+        })
+      }
+      console.log(lobby.noBuild)
     } else if (action.action == "chat") {
       console.log("recv chat")
       action.from = "player"+playerID

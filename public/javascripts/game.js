@@ -36,8 +36,6 @@ socket.onmessage = function(event) {
   let data = JSON.parse(event.data)
   console.log(data)
 
-
-
   if (data.action == "board") {
     game = JSON.parse(event.data)
     myColor = game.colors[game.playerID]
@@ -109,6 +107,7 @@ class BoardPiece extends HTMLElement {
 class Building extends BoardPiece {
   constructor(num, location, firstTile, myColor) {
     super(myColor)
+    this.innerHTML = placedBuildings
     this.constClassName = location + " pos" + num
     this.className = this.constClassName + " " + myColor
     this.style.gridArea = location+num
@@ -130,23 +129,6 @@ class Building extends BoardPiece {
       this.upgrade()
     } else {
       this.place(this.myColor)
-      //Update no-place sites
-      let buildingNum = this.id.substr(8) //remove building prefix
-      console.log(buildingNum)
-      Object.keys(game.board.tiles).forEach((tileName) => {
-        let tile = game.board.tiles[tileName]
-
-        for(let i=0; i<tile.buildings.length; i++) {
-          if (tile.buildings[i] == buildingNum) {
-            noBuild.push(tile.buildings[i])
-            noBuild.push(tile.buildings[(i+1)%6])
-            noBuild.push(tile.buildings[(i-1).mod(6)])
-            console.log((i-1).mod(6))
-            console.log(noBuild)
-            break
-          }
-        }
-      })
     }
   }
 
@@ -194,7 +176,6 @@ function drawBoard(game) {
   let tileHeight = 160
   let tileWidth = Math.sqrt(3)*tileHeight/2 * (27/26) // texture isn't a perfect hexagon
   let rowDistance = 0//"-"+tileHeight/4+"px"
-
 
   board.style.marginTop = rowDistance //compensate for marginBottom on rows
 
