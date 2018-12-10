@@ -142,23 +142,29 @@ wss.on("connection", function(ws) {
             let building = lobby.buildings[number]
 
             if(building == undefined || building.color == undefined){
-
-            }else{
-
-              lobby.players.forEach((player) => {
-                if(player.color == building.color){
-                  player.resources[currentTile.type]++
-                  if(building.type == "city"){
-                    player.resources[currentTile.type]++
-                  }
-                }
-              })
+              return
             }
+
+            lobby.players.some((player) => {
+              if(player.color == building.color){
+                player.resources[currentTile.type]++
+                if(building.type == "city"){
+                  player.resources[currentTile.type]++
+                }
+                return true // breaks this loop
+              }
+            })
           })
         }
       })
       lobby.players.forEach((player) => {
-        console.log(player.resources)
+        player.socket.ssend({
+          action: "chat",
+          from: "RESOURCES",
+          msg:
+        }
+          JSON.stringify(player.resources)
+        )
       })
 
 
