@@ -206,7 +206,9 @@ function drawBoard(game) {
       let gameTile = game.tiles[tileName]
       if (gameTile != undefined) {
         tile.className += gameTile.type
-        //tile.appendChild(Num(gameTile.number))
+        let number = document.createElement("number")
+        number.innerHTML = gameTile.number
+        tile.appendChild(number)
       }
 
       tile.id = tileName
