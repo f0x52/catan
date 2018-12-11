@@ -2,30 +2,23 @@ let socket = new WebSocket("ws://localhost:3000")
 let myColor = "red"
 let game
 
-// Modulo that works with negative numbers
-Number.prototype.mod = function(n) {
-    return ((this%n)+n)%n;
-};
-
 let chat = document.getElementById("chat")
 
-document.getElementById('ready').addEventListener("mouseup", function() {
-
+document.getElementById('ready').addEventListener("click", function() {
   let data = {
     action: "ready pressed"
   }
   socket.send(JSON.stringify(data))
 })
 
-document.getElementById('next').addEventListener("mouseup", function() {
-
+document.getElementById('next').addEventListener("click", function() {
   let data = {
     action: "next pressed"
   }
   socket.send(JSON.stringify(data))
 })
 
-document.getElementById('roll').addEventListener("mouseup", function() {
+document.getElementById('roll').addEventListener("click", function() {
   let data = {
     action: "dice rolled"
   }
@@ -41,9 +34,9 @@ socket.onmessage = function(event) {
     myColor = game.colors[game.playerID]
     drawBoard(game.board)
   } else if (data.action == "build") {
-    document.getElementById(data.what).place(data.color, true)
+    document.getElementById(data.what).place(data.color)
   } else if (data.action == "upgrade") {
-    document.getElementById(data.what).upgrade(true)
+    document.getElementById(data.what).upgrade()
   } else if (data.action == "chat") {
     let line = document.createElement("div")
     let from = document.createElement("b")
@@ -86,21 +79,29 @@ class BoardPiece extends HTMLElement {
     this.addEventListener("click", (e) => {this.click(e)})
   }
 
-  place(color, proxied) {
-    this.className = this.constClassName + " placed " + color
-    this.placed = true
-    this.color = color
-
-    if (proxied) {
-      // Action comes from WS instead of the user
+  click() {
+    if (this.type == "village") {
+      let obj = {
+        action: "upgrade",
+        what: this.id,
+        proxy: true
+      }
+      socket.send(JSON.stringify(obj))
       return
     }
+
     let obj = {
       action: "build",
       what: this.id,
-      color: color
+      color: this.myColor
     }
     socket.send(JSON.stringify(obj))
+  }
+
+  place(color) {
+    this.className = this.constClassName + " placed " + color
+    this.placed = true
+    this.color = color
   }
 }
 
@@ -120,33 +121,8 @@ class Building extends BoardPiece {
     }
   }
 
-  click() {
-
-    console.log(this.number + "\n" + game.currentPlayer)
-    //if (this.color == myColor && this.number == game.currentPlayer)
-
-    if (this.placed) {
-      this.upgrade()
-    } else {
-      this.place(this.myColor)
-    }
-  }
-
-  upgrade(proxied) {
-    if (this.color != myColor) {
-      return
-    }
+  upgrade() {
     this.className += " city"
-    if (proxied) {
-      // Action comes from WS instead of the user
-      return
-    }
-    let obj = {
-      action: "upgrade",
-      what: this.id,
-      proxy: true
-    }
-    socket.send(JSON.stringify(obj))
   }
 }
 
@@ -160,10 +136,6 @@ class Road extends BoardPiece {
     this.constClassName = "pos" + num
     this.className = this.constClassName + " " + myColor
     placedRoads++
-  }
-
-  click() {
-    this.place(this.myColor)
   }
 }
 
