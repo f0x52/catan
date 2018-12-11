@@ -9,7 +9,7 @@ let app = express()
 app.use(express.static('public'))
 
 app.use("/", function(req, res) {
-  res.sendFile("public/game.html", {
+  res.sendFile("public/splash.html", {
     root: "./"
   })
 })
@@ -157,15 +157,15 @@ wss.on("connection", function(ws) {
         }
       })
 
-      lobby.players.forEach((player) => {
-        player.socket.ssend({
-          action: "chat",
-          from: "RESOURCES",
-          msg:
-        }
-          JSON.stringify(player.resources)
-        )
-      })
+      //lobby.players.forEach((player) => {
+      //  player.socket.ssend({
+      //    action: "chat",
+      //   from: "RESOURCES",
+      //    msg:
+      //  }
+      //    JSON.stringify(player.resources)
+      //  )
+      //})
 
       callout(player.color + " rolled "+ total, true)
       callout(JSON.stringify(player.resources), false)
