@@ -157,15 +157,13 @@ wss.on("connection", function(ws) {
         }
       })
 
-      //lobby.players.forEach((player) => {
-      //  player.socket.ssend({
-      //    action: "chat",
-      //   from: "RESOURCES",
-      //    msg:
-      //  }
-      //    JSON.stringify(player.resources)
-      //  )
-      //})
+      lobby.players.forEach((player) => {
+        player.socket.ssend({
+          action: "chat",
+          from: "RESOURCES",
+          msg: JSON.stringify(player.resources)
+        })
+      })
 
       callout(player.color + " rolled "+ total, true)
       callout(JSON.stringify(player.resources), false)
