@@ -8,7 +8,7 @@ let app = express()
 
 app.use(express.static('public'))
 
-app.use("/", function(req, res) {
+app.get("/", function(req, res) {
   res.sendFile("public/splash.html", {
     root: "./"
   })
@@ -97,13 +97,18 @@ wss.on("connection", function(ws) {
     }
 
     if (action.action == "build" || action.action == "upgrade") {
-      lobby.players.forEach((player) => {
-        player.socket.ssend(action)
-      })
+      // Check resources required
 
+      // Check no-place sites
+
+      let buildingNum = action.what.substr(8) //remove building prefix
+      if (lobby.buildings[buildingNum] != undefined) {
+        //already occupied
+        return false
+      }
+
+      // Update no-place sites
       if (action.action == "build") {
-        //Update no-place sites
-        let buildingNum = action.what.substr(8) //remove building prefix
         console.log("built", buildingNum)
         Object.keys(lobby.board.tiles).forEach((tileName) => {
           let tile = lobby.board.tiles[tileName]
@@ -118,7 +123,11 @@ wss.on("connection", function(ws) {
           }
         })
       }
-      console.log(lobby.buildings)
+
+      // Send info to all clients
+      lobby.players.forEach((player) => {
+        player.socket.ssend(action)
+      })
     } else if (action.action == "chat") {
       console.log("recv chat")
       action.from = "player"+playerID

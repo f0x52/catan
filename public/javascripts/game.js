@@ -83,8 +83,7 @@ class BoardPiece extends HTMLElement {
     if (this.type == "village") {
       let obj = {
         action: "upgrade",
-        what: this.id,
-        proxy: true
+        what: this.id
       }
       socket.send(JSON.stringify(obj))
       return
@@ -108,7 +107,6 @@ class BoardPiece extends HTMLElement {
 class Building extends BoardPiece {
   constructor(num, location, firstTile, myColor) {
     super(myColor)
-    this.innerHTML = placedBuildings
     this.constClassName = location + " pos" + num
     this.className = this.constClassName + " " + myColor
     this.style.gridArea = location+num
@@ -176,7 +174,7 @@ function drawBoard(game) {
       let tile = document.createElement("tile")
       let tileName = Object.keys(game.tiles)[placedTiles]
       let gameTile = game.tiles[tileName]
-      if (gameTile != undefined) {
+      if (gameTile != undefined && gameTile.number != undefined) {
         tile.className += gameTile.type
         let number = document.createElement("number")
         number.innerHTML = gameTile.number

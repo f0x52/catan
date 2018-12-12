@@ -31,7 +31,7 @@ row, tile, catan-building, number {
 tile {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
-  background: url(../images/Field.png);
+  background: url(../images/Desert.png);
   background-size: cover;
   display: inline-grid;
   grid-template-columns: 14px 10px auto 10px 14px;
