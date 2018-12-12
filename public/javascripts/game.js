@@ -27,12 +27,16 @@ document.getElementById('roll').addEventListener("click", function() {
 
 socket.onmessage = function(event) {
   let data = JSON.parse(event.data)
-  //console.log(data)
+  console.log(data)
 
   if (data.action == "board") {
     game = JSON.parse(event.data)
     myColor = game.colors[game.playerID]
     drawBoard(game.board)
+    displayResources(game.players[game.playerID].resources)
+  } else if (data.action == "update resources") {
+    console.log(data)
+    displayResources(data.resources)
   } else if (data.action == "build") {
     document.getElementById(data.what).place(data.color)
   } else if (data.action == "upgrade") {
@@ -89,7 +93,7 @@ class BoardPiece extends HTMLElement {
       socket.send(JSON.stringify(obj))
       return
     }
-    
+
     let obj = {
       action: "build",
       what: this.id,
@@ -220,9 +224,14 @@ function drawBoard(game) {
       row.appendChild(tile)
       placedTiles++
     }
-    let offset = (boardSize[1]-tiles) * ( 0.5 * tileWidth)
-    row.style.marginLeft = offset + "px"
     row.style.marginBottom = "-40px"
     return row
   }
+}
+
+function displayResources(resources) {
+  Object.keys(resources).forEach((resource) => {
+    let num = document.querySelector("#"+resource + " span")
+    num.textContent = resources[resource]
+  })
 }

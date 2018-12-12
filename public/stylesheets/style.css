@@ -12,7 +12,7 @@ html, body {
 
 body {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 a {
@@ -20,8 +20,10 @@ a {
 }
 
 #board {
+  flex: 1 1 auto;
   align-self: center;
   display: inline-block;
+  text-align: center;
 }
 
 row, tile, catan-building, number {
@@ -77,6 +79,31 @@ number {
 
 .nyan {
   animation: rainbow 5s ease infinite;
+}
+
+.resources { /* total height will be 5*(15vh + 3vh) = 90 so will always fit */
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+.resources div {
+  margin: 1.5vh;
+  height: 15vh;
+  width: 11.4vh;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  display: flex;
+}
+
+.resources div span {
+  color: white;
+  -webkit-text-stroke: 6px black; /*outline*/
+  font-weight: bold;
+  flex: 1 1 auto;
+  text-align: center;
+  align-self: center;
+  font-size: 7vh;
 }
 
 catan-building, catan-road {
@@ -315,27 +342,27 @@ dice.num6{
   background-size: cover;
 }
 
-card.brick{
+.resources div#brick {
   background: url(../images/card-brick.png);
   background-size: cover;
 }
 
-card.grain{
+.resources div#grain {
   background: url(../images/card-grain.png);
   background-size: cover;
 }
 
-card.ore{
-  background: url(../images/card-ore.png);
+.resources div#iron {
+  background: url(../images/card-iron.png);
   background-size: cover;
 }
 
-card.sheep{
-  background: url(../images/card-sheep.png);
+.resources div#wool {
+  background: url(../images/card-wool.png);
   background-size: cover;
 }
 
-card.wood{
+.resources div#wood {
   background: url(../images/card-wood.png);
   background-size: cover;
 }

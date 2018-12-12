@@ -96,6 +96,15 @@ wss.on("connection", function(ws) {
       }
     }
 
+    //TODO: this function needs a better place
+    function sendUpdatedResources(player) {
+      let res = {
+        action: "update resources",
+        resources: player.resources
+      }
+      player.socket.ssend(res)
+    }
+
     if (action.action == "build" || action.action == "upgrade") {
       // Check resources required
       if(action.type == "village" && player.resources.brick < 1 && player.resources.wool < 1 && player.resources.grain < 1 && player.resources.wood < 1 ){
@@ -105,7 +114,7 @@ wss.on("connection", function(ws) {
         player.resources.wood--
         player.resources.wool--
         player.resources.brick--
-        callout(JSON.stringify(player.resources), false)
+        sendUpdatedResources(player)
       }
 
       if(action.type == "city" && player.resources.grain < 3 && player.resources.iron < 2 ){
@@ -113,6 +122,7 @@ wss.on("connection", function(ws) {
       }else if(action.type == "city"){
         player.resources.grain = player.resources.grain - 3
         player.resources.iron = player.resources.iron - 2
+        sendUpdatedResources(player)
       }
 
       if(action.type == "road" && player.resources.brick < 1 &&  player.resources.wood < 1 ){
@@ -120,6 +130,7 @@ wss.on("connection", function(ws) {
       }else if(action.type == "road"){
         player.resources.wood--
         player.resources.brick--
+        sendUpdatedResources(player)
       }
       // Check no-place sites
 
@@ -189,15 +200,10 @@ wss.on("connection", function(ws) {
       })
 
       lobby.players.forEach((player) => {
-        player.socket.ssend({
-          action: "chat",
-          from: "RESOURCES",
-          msg: JSON.stringify(player.resources)
-        })
+        sendUpdatedResources(player)
       })
 
       callout(player.color + " rolled "+ total, true)
-      callout(JSON.stringify(player.resources), false)
     }
 
     if (action.action == "next pressed" && lobby.started && player.id == lobby.currentPlayer && player.rolled) {
