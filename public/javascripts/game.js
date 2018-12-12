@@ -2,6 +2,9 @@ let socket = new WebSocket("ws://localhost:3000")
 let myColor = "red"
 let game
 
+// sawing sound, released CC by 3.0
+// https://github.com/SlimeKnights/TinkersConstruct/blob/1.12/resources/assets/tconstruct/sounds/Credits.txt
+let saw = new Audio("little_saw.ogg")
 let chat = document.getElementById("chat")
 
 document.getElementById('ready').addEventListener("click", function() {
@@ -38,6 +41,7 @@ socket.onmessage = function(event) {
     console.log(data)
     displayResources(data.resources)
   } else if (data.action == "build") {
+    saw.play()
     document.getElementById(data.what).place(data.color)
   } else if (data.action == "upgrade") {
     document.getElementById(data.what).upgrade()
