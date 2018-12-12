@@ -55,7 +55,7 @@ wss.on("connection", function(ws) {
     ready: true, // TODO: set to false!
     color: lobby.colors[playerID],
     rolled: false,
-    resources: {brick: 0, grain: 0, iron: 0, wool: 0, wood: 0}
+    resources: {brick: 2, grain: 1, iron: 0, wool: 1, wood: 2}
   }
 
   lobby.players.push(player)
@@ -98,7 +98,29 @@ wss.on("connection", function(ws) {
 
     if (action.action == "build" || action.action == "upgrade") {
       // Check resources required
+      if(action.type == "village" && player.resources.brick < 1 && player.resources.wool < 1 && player.resources.grain < 1 && player.resources.wood < 1 ){
+        return false
+      }else if(action.type == "village"){
+        player.resources.grain--
+        player.resources.wood--
+        player.resources.wool--
+        player.resources.brick--
+        callout(JSON.stringify(player.resources), false)
+      }
 
+      if(action.type == "city" && player.resources.grain < 3 && player.resources.iron < 2 ){
+        return false
+      }else if(action.type == "city"){
+        player.resources.grain = player.resources.grain - 3
+        player.resources.iron = player.resources.iron - 2
+      }
+
+      if(action.type == "road" && player.resources.brick < 1 &&  player.resources.wood < 1 ){
+        return false
+      }else if(action.type == "road"){
+        player.resources.wood--
+        player.resources.brick--
+      }
       // Check no-place sites
 
       let buildingNum = action.what.substr(8) //remove building prefix

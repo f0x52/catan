@@ -27,7 +27,7 @@ document.getElementById('roll').addEventListener("click", function() {
 
 socket.onmessage = function(event) {
   let data = JSON.parse(event.data)
-  console.log(data)
+  //console.log(data)
 
   if (data.action == "board") {
     game = JSON.parse(event.data)
@@ -83,17 +83,24 @@ class BoardPiece extends HTMLElement {
     if (this.type == "village") {
       let obj = {
         action: "upgrade",
-        what: this.id
+        what: this.id,
+        type: "city"
       }
       socket.send(JSON.stringify(obj))
       return
     }
-
+    
     let obj = {
       action: "build",
       what: this.id,
-      color: this.myColor
+      color: this.myColor,
+      type: "road"
     }
+
+    if(this.id.includes("building")){
+      obj.type = "village"
+    }
+
     socket.send(JSON.stringify(obj))
   }
 
