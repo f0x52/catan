@@ -43,14 +43,16 @@ tile {
 }
 
 number {
+  background: none;
   display: inline-block;
   justify-self: center;
   align-self: center;
-  background: white;
-  border-radius: 15px;
-  padding: 15px;
+  height: 50px;
+  width: 50px;
   font-weight: bold;
   grid-area: num;
+  background-image: url(../images/numbers.png);
+  background-size: auto 100%;
 }
 
 .message {
@@ -281,56 +283,6 @@ catan-road.blue {
 
 catan-road.white {
   background: white;
-}
-
-number.num2{
-  background: url(../images/coin-2.png);
-  background-size: cover;
-}
-
-number.num3{
-  background: url(../images/coin-3.png);
-  background-size: cover;
-}
-
-number.num4{
-  background: url(../images/coin-4.png);
-  background-size: cover;
-}
-
-number.num5{
-  background: url(../images/coin-5.png);
-  background-size: cover;
-}
-
-number.num6{
-  background: url(../images/coin-6.png);
-  background-size: cover;
-}
-
-number.num8{
-  background: url(../images/coin-8.png);
-  background-size: cover;
-}
-
-number.num9{
-  background: url(../images/coin-9.png);
-  background-size: cover;
-}
-
-number.num10{
-  background: url(../images/coin-10.png);
-  background-size: cover;
-}
-
-number.num11{
-  background: url(../images/coin-11.png);
-  background-size: cover;
-}
-
-number.num12{
-  background: url(../images/coin-12.png);
-  background-size: cover;
 }
 
 dice.num1{

@@ -177,7 +177,7 @@ function drawBoard(game) {
       if (gameTile != undefined && gameTile.number != undefined) {
         tile.className += gameTile.type
         let number = document.createElement("number")
-        number.innerHTML = gameTile.number
+        number.style.backgroundPosition = -50 * gameTile.number + "px" //image will be scaled to 50px
         tile.appendChild(number)
       }
 
