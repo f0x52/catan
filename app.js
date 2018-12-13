@@ -1,17 +1,22 @@
 let express = require("express")
+let ejs = require("ejs")
 let http = require("http")
 let websocket = require("ws")
 let createLobby = require("./server/lobby")
 
 let port = process.argv[2]
 let app = express()
+let stats = {
+  games: 0,
+  points: 0,
+  gnomes: 0
+}
 
 app.use(express.static('public'))
+app.set('view engine', 'ejs')
 
 app.get("/", function(req, res) {
-  res.sendFile("public/splash.html", {
-    root: "./"
-  })
+  res.render('splash.ejs', stats)
 })
 
 let server = http.createServer(app)
@@ -109,7 +114,7 @@ wss.on("connection", function(ws) {
       let buildingNum = action.what.substr(8) //remove building prefix
 
       // Check resources required
-      if(action.type == "village" && (player.resources.brick < || player.resources.wool < 1 || player.resources.grain < 1 || player.resources.wood < 1 )){
+      if(action.type == "village" && (player.resources.brick < 1 || player.resources.wool < 1 || player.resources.grain < 1 || player.resources.wood < 1 )){
         return false
       }else if(action.type == "village"){
         // Check no-place sites for villages
@@ -176,8 +181,11 @@ wss.on("connection", function(ws) {
         player.socket.ssend(action)
       })
     } else if (action.action == "chat") {
-      console.log("recv chat")
       action.from = "player"+playerID
+      if (action.msg.startsWith("\n████████▓▓████████▓▓█████████████")) {
+        //Gnome
+        stats.gnomes++
+      }
       lobby.players.forEach((player) => {
         player.socket.ssend(action)
       })

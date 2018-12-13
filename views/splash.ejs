@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Catan Splashscreen</title>
+  <link rel='stylesheet' href='/stylesheets/splash.css' />
+</head>
+
+<body>
+  <div class="splash">
+    <div class="buttons">
+      <div class="stats">
+        <span class="stat">
+          Games played:
+        </span>
+        <span class="value">
+           <%= games %>
+        </span>
+        <span class="stat">
+          Total points scored:
+        </span>
+        <span class="value">
+           <%= points %>
+        </span>
+        <span class="stat">
+          Gnomes sent:
+        </span>
+        <span class="value">
+           <%= gnomes %>
+        </span>
+      </div>
+      <a href="/game.html"><img id = "play" src="/images/button-play.png"></a>
+      <img id = "learn" src="/images/button-learn.png">
+    </div>
+  </div>
+</body>
+</html>
