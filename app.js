@@ -125,9 +125,12 @@ wss.on("connection", function(ws) {
         sendUpdatedResources(player)
       }
 
+      console.log("test3")
       if(action.type == "city" && player.resources.grain < 3 && player.resources.iron < 2 ){
+        console.log("test1")
         return false
       }else if(action.type == "city"){
+
         player.resources.grain = player.resources.grain - 3
         player.resources.iron = player.resources.iron - 2
         sendUpdatedResources(player)
@@ -142,15 +145,15 @@ wss.on("connection", function(ws) {
       }
       // Check no-place sites
 
-      let buildingNum = action.what.substr(8) //remove building prefix
-      if (lobby.buildings[buildingNum] != undefined) {
-        //already occupied
-        if(action.type == "city"){
+      //let buildingNum = action.what.substr(8) //remove building prefix
+      //if (lobby.buildings[buildingNum] != undefined) {
+      //  //already occupied
+      //  if(action.type == "city"){
 
-        }else{
-          return false
-        }
-      }
+      //  }else{
+      //    return false
+      //  }
+      //}
 
       // Update no-place sites
       if (action.action == "build") {

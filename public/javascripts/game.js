@@ -87,12 +87,14 @@ class BoardPiece extends HTMLElement {
   }
 
   click() {
+    console.log("click")
     if (this.type == "village") {
       let obj = {
         action: "upgrade",
         what: this.id,
         type: "city"
       }
+      console.log("city", obj)
       socket.send(JSON.stringify(obj))
       return
     }
@@ -106,6 +108,7 @@ class BoardPiece extends HTMLElement {
 
     if(this.id.includes("building")){
       obj.type = "village"
+      this.type = "village"
     }
 
     socket.send(JSON.stringify(obj))
