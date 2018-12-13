@@ -222,6 +222,7 @@ wss.on("connection", function(ws) {
 
     } else if (action.action == "chat") {
       action.from = "player"+playerID
+      action.color = player.color
       if (action.msg.startsWith("\n████████▓▓████████▓▓█████████████")) {
         //Gnome
         stats.gnomes++

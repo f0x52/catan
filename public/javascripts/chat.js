@@ -2,6 +2,7 @@ function addMessage(chat, data) {
   let from = document.createElement("b")
   let line = document.createElement("div")
   from.textContent = data.from + ": "
+  from.style.color = data.color
   let msg = document.createElement("span")
   if (data.msg.startsWith("nyan")) {
     msg.className = "nyan"
