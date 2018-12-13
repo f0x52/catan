@@ -26,6 +26,19 @@ a {
   text-align: center;
 }
 
+button, .message {
+  border: 15px solid transparent;
+  border-image: url(../images/board.png) 3 round;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  background: #c5bfa4;
+  color: black;
+}
+
+button {
+  margin: 5px;
+}
+
 .github img {
   position: absolute;
   top: 0;
@@ -79,11 +92,6 @@ number {
   overflow-wrap: anywhere;
   color: black;
   align-self: flex-end;
-  border: 15px solid transparent;
-  border-image: url(../images/board.png) 3 round;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  background: #c5bfa4;
   position: fixed;
   right: 15px;
   bottom: 15px;
