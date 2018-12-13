@@ -111,7 +111,7 @@ app.ws("/ws/:name", function(ws, req) {
       let buildingNum = action.what.substr(8) //remove building prefix
 
       // Check resources required
-      if(action.type == "village" && (player.resources.brick < 1 || player.resources.wool < 1 || player.resources.grain < 1 || player.resources.wood < 1 )){
+      if(action.what.startsWith("building") && (player.resources.brick < 1 || player.resources.wool < 1 || player.resources.grain < 1 || player.resources.wood < 1 )){
         return false
       }else if(action.what.startsWith("building")){
         // Check no-place sites for villages
