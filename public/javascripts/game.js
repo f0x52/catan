@@ -218,7 +218,7 @@ function drawBoard(game) {
       }
 
       if (lastChild && location == "top", myColor) {
-        tile.appendChild(new Road(3, location))
+        //tile.appendChild(new Road(3, location, myColor))
       }
 
       if (firstChild) {

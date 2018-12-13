@@ -71,6 +71,7 @@ number {
   flex: 1 1 auto;
   height: 300px;
   overflow-y: auto;
+  align-self: flex-end;
 }
 
 #send {
