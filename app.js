@@ -55,7 +55,7 @@ wss.on("connection", function(ws) {
     ready: true, // TODO: set to false!
     color: lobby.colors[playerID],
     rolled: false,
-    resources: {brick: 2, grain: 1, iron: 0, wool: 1, wood: 2}
+    resources: {brick: 10, grain: 10, iron: 10, wool: 10, wood: 10}
   }
 
   lobby.players.push(player)
@@ -137,7 +137,11 @@ wss.on("connection", function(ws) {
       let buildingNum = action.what.substr(8) //remove building prefix
       if (lobby.buildings[buildingNum] != undefined) {
         //already occupied
-        return false
+        if(action.type == "city"){
+
+        }else{
+          return false
+        }
       }
 
       // Update no-place sites
