@@ -109,7 +109,7 @@ wss.on("connection", function(ws) {
       let buildingNum = action.what.substr(8) //remove building prefix
 
       // Check resources required
-      if(action.type == "village" && player.resources.brick < 1 && player.resources.wool < 1 && player.resources.grain < 1 && player.resources.wood < 1 ){
+      if(action.type == "village" && (player.resources.brick < || player.resources.wool < 1 || player.resources.grain < 1 || player.resources.wood < 1 )){
         return false
       }else if(action.type == "village"){
         // Check no-place sites for villages
@@ -126,7 +126,7 @@ wss.on("connection", function(ws) {
       }
 
       console.log("test3")
-      if(action.type == "city" && player.resources.grain < 3 && player.resources.iron < 2 ){
+      if(action.type == "city" && (player.resources.grain < 3 || player.resources.iron < 2 )){
         console.log("test1")
         return false
       }else if(action.type == "city"){
@@ -136,7 +136,7 @@ wss.on("connection", function(ws) {
         sendUpdatedResources(player)
       }
 
-      if(action.type == "road" && player.resources.brick < 1 &&  player.resources.wood < 1 ){
+      if(action.type == "road" && (player.resources.brick < 1 || player.resources.wood < 1 )){
         return false
       }else if(action.type == "road"){
         player.resources.wood--
