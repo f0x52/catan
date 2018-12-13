@@ -7,31 +7,48 @@
 </head>
 
 <body>
-  <div class="splash">
-    <div class="buttons">
-      <div class="stats">
-        <span class="stat">
-          Games played:
-        </span>
-        <span class="value">
-           <%= games %>
-        </span>
-        <span class="stat">
-          Total points scored:
-        </span>
-        <span class="value">
-           <%= points %>
-        </span>
-        <span class="stat">
-          Gnomes sent:
-        </span>
-        <span class="value">
-           <%= gnomes %>
-        </span>
-      </div>
-      <a href="/game.html"><img id = "play" src="/images/button-play.png"></a>
-      <img id = "learn" src="/images/button-learn.png">
+  <img class="splash" src="images/splash.png">
+  <div class="buttons">
+    <div class="stats">
+      <span class="stat">
+        Games played:
+      </span>
+      <span class="value">
+          <%= games %>
+      </span>
+      <span class="stat">
+        Total points scored:
+      </span>
+      <span class="value">
+          <%= points %>
+      </span>
+      <span class="stat">
+        Gnomes sent:
+      </span>
+      <span class="value">
+          <%= gnomes %>
+      </span>
+      <span class="stat">
+        Catan visits:
+      </span>
+      <span class="value" id='visits'>
+        0
+      </span>
     </div>
+    <a href="/game.html" id="play">Play</a>
   </div>
+  <script>
+    let cookies = document.cookie
+    let from = cookies.indexOf("visits=")
+    let till = cookies.indexOf("|", from)
+    let visits = cookies.substr(from+7, till-from-7)
+    visits = parseInt(visits)
+    if (isNaN(visits)) {
+      visits = 0
+    }
+    visits++
+    document.getElementById("visits").textContent = visits
+    document.cookie = "visits="+visits+"|"
+  </script>
 </body>
 </html>

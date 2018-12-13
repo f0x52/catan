@@ -1,25 +1,28 @@
-.splash{
-  position: relative;
-  background: url(../images/new-splash.png);
-  background-size: cover;
-  align-self: center;
-  display: inline-block;
-  width: 700px;
-  height: 700px;
+html {
+  min-height: 100vh;
+  min-width: 100vw;
 }
 
-body{
+body {
   background-color: #1d7fc6;
   display: flex;
   justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.splash{
+  align-self: center;
+  display: inline-block;
+  height: 65vh;
 }
 
 .buttons{
-  position: absolute;
-  bottom: 20px;
+  align-self: center;
   display: flex;
-  justify-content: space-around;
-  width: 100%;
+  flex-direction: column;
+  color: #fedb2c;
+  font-size: 2rem;
 }
 
 .stats {
@@ -27,8 +30,21 @@ body{
   grid-template-columns: auto auto;
 }
 
-img{
+.stats span {
+  padding: 0 10px;
+}
 
-  height: 40px;
+img {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+}
 
+#play {
+  margin-top: 2rem;
+  text-align: center;
+  text-decoration: none;
+  background: #fedb2c;
+  color: black;
+  padding: 1rem;
+  border-radius: 0.5rem;
 }
