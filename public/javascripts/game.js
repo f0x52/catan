@@ -7,7 +7,7 @@ let game
 
 // sawing sound, released CC by 3.0
 // https://github.com/SlimeKnights/TinkersConstruct/blob/1.12/resources/assets/tconstruct/sounds/Credits.txt
-let saw = new Audio("little_saw.ogg")
+let saw = new Audio("saw.ogg")
 
 document.getElementById('ready').addEventListener("click", function() {
   let data = {
@@ -221,7 +221,7 @@ function drawBoard(game) {
       }
 
       if (lastChild && location == "top", myColor) {
-        //tile.appendChild(new Road(3, location, myColor))
+        tile.appendChild(new Road(3, location, myColor))
       }
 
       if (firstChild) {
