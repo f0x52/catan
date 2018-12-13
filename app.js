@@ -21,6 +21,8 @@ const wss = new websocket.Server({
 })
 
 let lobbies = []
+let villageResources =  {brick: 1, grain: 1, iron: 0, wool: 1, wood: 1}
+let roadResources = {brick: 1, grain: 0, iron: 0, wool: 0, wood: 1}
 
 // Modulo that works with negative numbers
 Number.prototype.mod = function(n) {
@@ -52,10 +54,10 @@ wss.on("connection", function(ws) {
   let player = {
     id: playerID,
     socket: ws,
-    ready: true, // TODO: set to false!
+    ready: false, // TODO: set to false!
     color: lobby.colors[playerID],
     rolled: false,
-    resources: {brick: 10, grain: 10, iron: 10, wool: 10, wood: 10}
+    resources: {brick: 0, grain: 0, iron: 0, wool: 0, wood: 0}
   }
 
   lobby.players.push(player)
@@ -105,42 +107,44 @@ wss.on("connection", function(ws) {
       player.socket.ssend(res)
     }
 
-    if (action.action == "build" || action.action == "upgrade") {
+    if (action.action == "build") {
       let buildingNum = action.what.substr(8) //remove building prefix
 
       // Check resources required
-      if(action.type == "village" && (player.resources.brick < || player.resources.wool < 1 || player.resources.grain < 1 || player.resources.wood < 1 )){
+      if(action.what.startsWith("building") && (player.resources.brick < 1 || player.resources.wool < 1 || player.resources.grain < 1 || player.resources.wood < 1 )){
         return false
-      }else if(action.type == "village"){
+      }else if(action.what.startsWith("building")){
         // Check no-place sites for villages
         if (lobby.buildings[buildingNum] != undefined) {
           //already occupied
           return false
         }
-
         player.resources.grain--
         player.resources.wood--
         player.resources.wool--
         player.resources.brick--
+
+        if(lobby.turnCount < 8){
+          player.resources = JSON.parse(JSON.stringify(roadResources))
+        }
         sendUpdatedResources(player)
       }
 
-      console.log("test3")
-      if(action.type == "city" && (player.resources.grain < 3 || player.resources.iron < 2 )){
-        console.log("test1")
+      if(action.what.startsWith("road") && (player.resources.brick < 1 || player.resources.wood < 1 )){
         return false
-      }else if(action.type == "city"){
-        player.resources.grain = player.resources.grain - 3
-        player.resources.iron = player.resources.iron - 2
-        sendUpdatedResources(player)
-      }
+      }else if(action.what.startsWith("road")){
 
-      if(action.type == "road" && (player.resources.brick < 1 || player.resources.wood < 1 )){
-        return false
-      }else if(action.type == "road"){
+        if(lobby.turnCount < 8 && player.resources.grain == 1){
+          callout("Please build a village first", false)
+          return false
+        }
+
         player.resources.wood--
         player.resources.brick--
         sendUpdatedResources(player)
+        if(lobby.turnCount < 8){
+          callout("Please press next turn", false)
+        }
       }
       // Check no-place sites
 
@@ -175,6 +179,26 @@ wss.on("connection", function(ws) {
       lobby.players.forEach((player) => {
         player.socket.ssend(action)
       })
+    }else if(action.action == "upgrade"){
+      let buildingNum = action.what.substr(8)
+      //console.log("test log")
+      if(player.resources.grain < 3 || player.resources.iron < 2 ){
+        return false
+      }
+
+      if (lobby.buildings[buildingNum] == undefined || lobby.buildings[buildingNum].color != player.color) {
+        //already occupied
+        return false
+      }
+
+      player.resources.grain = player.resources.grain - 3
+      player.resources.iron = player.resources.iron - 2
+      sendUpdatedResources(player)
+
+      lobby.players.forEach((player) => {
+        player.socket.ssend(action)
+      })
+
     } else if (action.action == "chat") {
       console.log("recv chat")
       action.from = "player"+playerID
@@ -183,7 +207,7 @@ wss.on("connection", function(ws) {
       })
     }
 
-    if (action.action == "dice rolled" && player.id == lobby.currentPlayer && !player.rolled) {
+    if (action.action == "dice rolled" && player.id == lobby.currentPlayer && !player.rolled && lobby.turnCount >= 8) {
       console.log("dice rolled")
       player.rolled = true
       let dice1 = Math.floor((Math.random() * 6)+1)
@@ -220,10 +244,28 @@ wss.on("connection", function(ws) {
       callout(player.color + " rolled "+ total, true)
     }
 
-    if (action.action == "next pressed" && lobby.started && player.id == lobby.currentPlayer && player.rolled) {
-      lobby.currentPlayer++
+    if (action.action == "next pressed" && lobby.started && player.id == lobby.currentPlayer && (player.rolled || lobby.turnCount < 8)) {
+      if(lobby.turnCount < 9 && player.resources.brick != 0){
+        callout("You still need to build", false)
+        return
+      }
+      lobby.turnCount++
+      if(lobby.turnCount == 4){
+
+      }else if(lobby.turnCount > 4 && lobby.turnCount < 8){
+        lobby.currentPlayer--
+        if(lobby.currentPlayer == -1){ lobby.currentPlayer = 3}
+      }else{
+        lobby.currentPlayer++
+      }
       player.rolled = false
       if(lobby.currentPlayer == 4){ lobby.currentPlayer = 0}
+      if(lobby.turnCount < 8){
+        lobby.players[lobby.currentPlayer].resources = JSON.parse(JSON.stringify(villageResources)) //big gay
+        lobby.players.forEach((player) => {
+          sendUpdatedResources(player)
+        })
+      }
       console.log("Turn given to: " + lobby.currentPlayer)
 
       callout(lobby.players[lobby.currentPlayer].color + " " + lobby.currentPlayer + " has the turn", true)
@@ -247,6 +289,10 @@ wss.on("connection", function(ws) {
         if(lobby.started){
           let randomnumber = Math.floor(Math.random() * 4)
           lobby.currentPlayer = randomnumber
+          lobby.players[lobby.currentPlayer].resources = JSON.parse(JSON.stringify(villageResources))
+          lobby.players.forEach((player) => {
+            sendUpdatedResources(player)
+          })
           callout(lobby.players[lobby.currentPlayer].color + " " + lobby.currentPlayer + " has the turn", true)
         }
       } else{

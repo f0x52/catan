@@ -78,7 +78,7 @@ class BoardPiece extends HTMLElement {
   click() {
     console.log("click")
     console.log(this)
-    if (this.type == "village") {
+    if (this.type == "village" ) {
       let obj = {
         action: "upgrade",
         what: this.id,
@@ -92,21 +92,17 @@ class BoardPiece extends HTMLElement {
     let obj = {
       action: "build",
       what: this.id,
-      color: this.myColor,
-      type: "road"
-    }
-
-    if(this.id.includes("building")){
-      obj.type = "village"
-      if(this.type != "city"){
-          this.type = "village"
-      }
+      color: this.myColor
     }
 
     socket.send(JSON.stringify(obj))
   }
 
   place(color) {
+
+    if(this.id.includes("building")){
+          this.type = "village"
+    }
     this.className = this.constClassName + " placed " + color
     this.placed = true
     this.color = color
