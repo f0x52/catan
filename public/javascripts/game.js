@@ -225,7 +225,10 @@ function drawBoard(game) {
       }
 
       if (lastChild && location == "top", myColor) {
-        tile.appendChild(new Road(3, location, myColor))
+        let road = new Road(3, location, myColor)
+        road.style.opacity = 0;
+        road.style.zIndex = -100;
+        tile.appendChild(road)
       }
 
       if (firstChild) {
