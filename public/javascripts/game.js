@@ -77,6 +77,7 @@ class BoardPiece extends HTMLElement {
 
   click() {
     console.log("click")
+    console.log(this)
     if (this.type == "village") {
       let obj = {
         action: "upgrade",
@@ -97,7 +98,9 @@ class BoardPiece extends HTMLElement {
 
     if(this.id.includes("building")){
       obj.type = "village"
-      this.type = "village"
+      if(this.type != "city"){
+          this.type = "village"
+      }
     }
 
     socket.send(JSON.stringify(obj))
@@ -126,6 +129,7 @@ class Building extends BoardPiece {
   }
 
   upgrade() {
+    this.type = "city"
     this.className += " city"
   }
 }

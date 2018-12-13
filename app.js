@@ -130,7 +130,6 @@ wss.on("connection", function(ws) {
         console.log("test1")
         return false
       }else if(action.type == "city"){
-
         player.resources.grain = player.resources.grain - 3
         player.resources.iron = player.resources.iron - 2
         sendUpdatedResources(player)
