@@ -299,7 +299,7 @@ app.ws("/ws/:name", function(ws, req) {
       }
       console.log("Turn given to: " + lobby.currentPlayer)
 
-      callout(lobby.players[lobby.currentPlayer].color + " " + lobby.currentPlayer + " has the turn", true)
+      callout(lobby.players[lobby.currentPlayer].name + " has the turn", true)
     }
 
     if (action.action == "ready pressed" && lobby.started == false && lobby.victory == false) {
