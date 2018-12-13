@@ -1,3 +1,18 @@
+function addMessage(chat, data) {
+  let from = document.createElement("b")
+  let line = document.createElement("div")
+  from.textContent = data.from + ": "
+  let msg = document.createElement("span")
+  if (data.msg.startsWith("nyan")) {
+    msg.className = "nyan"
+  }
+  msg.textContent = data.msg
+  line.appendChild(from)
+  line.appendChild(msg)
+  chat.appendChild(line)
+  chat.scrollTop = chat.scrollHeight;
+}
+
 function chatParse(msg) {
   if (msg == "/gnome") {
     msg = `

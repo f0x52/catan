@@ -65,13 +65,13 @@ number {
   overflow-wrap: anywhere;
   background: #1c1c1c;
   color: white;
+  align-self: flex-end;
 }
 
 #chat {
   flex: 1 1 auto;
   height: 300px;
   overflow-y: auto;
-  align-self: flex-end;
 }
 
 #send {
