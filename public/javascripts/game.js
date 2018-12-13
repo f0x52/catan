@@ -1,7 +1,9 @@
 let socket = new WebSocket("ws://localhost:3000")
 let chat = document.getElementById("chat")
+let html = document.getElementsByTagName("html")[0]
 let myColor = "red"
 let game
+
 
 // sawing sound, released CC by 3.0
 // https://github.com/SlimeKnights/TinkersConstruct/blob/1.12/resources/assets/tconstruct/sounds/Credits.txt
@@ -26,6 +28,16 @@ document.getElementById('roll').addEventListener("click", function() {
     action: "dice rolled"
   }
   socket.send(JSON.stringify(data))
+})
+
+document.getElementById('fullscreen').addEventListener("click", function(e) {
+  if (e.target.fullscreen) {
+    e.target.fullscreen = false
+    document.exitFullscreen()
+    return
+  }
+  e.target.fullscreen = true
+  html.requestFullscreen()
 })
 
 socket.onmessage = function(event) {

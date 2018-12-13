@@ -68,6 +68,14 @@ number {
   align-self: flex-end;
 }
 
+#fullscreen::after {
+  content: "Open fullscreen";
+}
+
+html:fullscreen #fullscreen::after {
+  content: "Close fullscreen";
+}
+
 #chat {
   flex: 1 1 auto;
   height: 300px;
