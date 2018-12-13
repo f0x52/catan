@@ -140,6 +140,18 @@ wss.on("connection", function(ws) {
         player.resources.brick--
         sendUpdatedResources(player)
       }
+      // Check no-place sites
+
+      let buildingNum = action.what.substr(8) //remove building prefix
+      if (lobby.buildings[buildingNum] != undefined) {
+        //already occupied
+        if(action.type == "city"){
+
+        }else{
+          return false
+        }
+      }
+
       // Update no-place sites
       if (action.action == "build") {
         console.log("built", buildingNum)
