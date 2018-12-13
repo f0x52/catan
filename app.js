@@ -62,7 +62,8 @@ wss.on("connection", function(ws) {
     ready: false, // TODO: set to false!
     color: lobby.colors[playerID],
     rolled: false,
-    resources: {brick: 10, grain: 10, iron: 10, wool: 10, wood: 10}
+    resources: {brick: 0, grain: 0, iron: 0, wool: 0, wood: 0},
+    victoryPoints: 0
   }
 
   lobby.players.push(player)
@@ -103,6 +104,12 @@ wss.on("connection", function(ws) {
       }
     }
 
+    function victory(player){
+      lobby.started = false
+      lobby.victory = true
+      callout("🎉 " + player.color + " has won the game! 🎉")
+    }
+
     //TODO: this function needs a better place
     function sendUpdatedResources(player) {
       let res = {
@@ -128,6 +135,11 @@ wss.on("connection", function(ws) {
         player.resources.wood--
         player.resources.wool--
         player.resources.brick--
+
+        player.victoryPoints++
+        if(player.victoryPoints >= 10){
+          victory(player)
+        }
 
         if(lobby.turnCount < 8){
           player.resources = JSON.parse(JSON.stringify(roadResources))
@@ -196,6 +208,10 @@ wss.on("connection", function(ws) {
         return false
       }
 
+      player.victoryPoints++
+      if(player.victoryPoints >= 10){
+        victory(player)
+      }
       player.resources.grain = player.resources.grain - 3
       player.resources.iron = player.resources.iron - 2
       sendUpdatedResources(player)
@@ -214,11 +230,11 @@ wss.on("connection", function(ws) {
       if(action.msg.startsWith("/trade")){
         let data = action.msg.split(" ")
         if(player.resources[data[1]] != undefined && player.resources[data[2]] != undefined){
-          if(player.resources[data[1]] >= 2){
-            player.resources[data[1]] = player.resources[data[1]]-2
+          if(player.resources[data[1]] >= 3){
+            player.resources[data[1]] = player.resources[data[1]]-3
             player.resources[data[2]]++
             sendUpdatedResources(player)
-            callout(player.color + " sucessfully traded 2 " + data[1] + " for 1 " + data[2], true)
+            callout(player.color + " sucessfully traded 3 " + data[1] + " for 1 " + data[2], true)
           }else{
             callout("Not enough resources", false)
           }
@@ -297,7 +313,7 @@ wss.on("connection", function(ws) {
       callout(lobby.players[lobby.currentPlayer].color + " " + lobby.currentPlayer + " has the turn", true)
     }
 
-    if (action.action == "ready pressed" && lobby.started == false) {
+    if (action.action == "ready pressed" && lobby.started == false && lobby.victory == false) {
       player.ready = true
 
       if(lobby.players.length==4){

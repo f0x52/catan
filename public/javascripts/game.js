@@ -238,7 +238,6 @@ function drawBoard(game) {
     return row
   }
 }
-
 function displayResources(resources) {
   Object.keys(resources).forEach((resource) => {
     let num = document.querySelector("#"+resource + " span")
