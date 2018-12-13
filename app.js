@@ -6,6 +6,8 @@ let createLobby = require("./server/lobby")
 
 let port = process.argv[2]
 let app = express()
+let expressWs = require('express-ws')(app);
+
 let stats = {
   games: 0,
   points: 0,
@@ -19,22 +21,7 @@ app.get("/", function(req, res) {
   res.render('splash.ejs', stats)
 })
 
-let server = http.createServer(app)
-
-const wss = new websocket.Server({
-  server
-})
-
-let lobbies = []
-let villageResources =  {brick: 1, grain: 1, iron: 0, wool: 1, wood: 1}
-let roadResources = {brick: 1, grain: 0, iron: 0, wool: 0, wood: 1}
-
-// Modulo that works with negative numbers
-Number.prototype.mod = function(n) {
-    return ((this%n)+n)%n;
-};
-
-wss.on("connection", function(ws) {
+app.ws("/ws/:name", function(ws, req) {
   ws.ssend = function(message) {
     if (this.readyState != 1) {
       return 0
@@ -58,6 +45,7 @@ wss.on("connection", function(ws) {
 
   let player = {
     id: playerID,
+    name: req.params.name,
     socket: ws,
     ready: false, // TODO: set to false!
     color: lobby.colors[playerID],
@@ -205,7 +193,7 @@ wss.on("connection", function(ws) {
       })
 
     } else if (action.action == "chat") {
-      action.from = "player"+playerID
+      action.from = player.name
       action.color = player.color
       if (action.msg.startsWith("\n████████▓▓████████▓▓█████████████")) {
         //Gnome
@@ -219,7 +207,7 @@ wss.on("connection", function(ws) {
             player.resources[data[1]] = player.resources[data[1]]-2
             player.resources[data[2]]++
             sendUpdatedResources(player)
-            callout(player.color + " sucessfully traded 2 " + data[1] + " for 1 " + data[2], true)
+            callout(player.name + " sucessfully traded 2 " + data[1] + " for 1 " + data[2], true)
           }else{
             callout("Not enough resources", false)
           }
@@ -268,7 +256,7 @@ wss.on("connection", function(ws) {
         sendUpdatedResources(player)
       })
 
-      callout(player.color + " rolled "+ total, true)
+      callout(player.name + " rolled "+ total, true)
     }
 
     if (action.action == "next pressed" && lobby.started && player.id == lobby.currentPlayer && (player.rolled || lobby.turnCount < 8)) {
@@ -304,12 +292,16 @@ wss.on("connection", function(ws) {
       if(lobby.players.length==4){
         let tempTruth = true
 
+        let readyCount = 0
         for(let i = 0; i < 4; i++){
           if(lobby.players[i].ready == false){
             tempTruth = false
-            //callout("Waiting for remaining players (" + i + "/4)", false)
-            break
+          } else {
+            readyCount++
           }
+        }
+        if (!tempTruth) {
+          callout(`${player.name} is ready (${readyCount}/4)`, true)
         }
         lobby.started = tempTruth
 
@@ -329,4 +321,13 @@ wss.on("connection", function(ws) {
   })
 })
 
-server.listen(port)
+let lobbies = []
+let villageResources =  {brick: 1, grain: 1, iron: 0, wool: 1, wood: 1}
+let roadResources = {brick: 1, grain: 0, iron: 0, wool: 0, wood: 1}
+
+// Modulo that works with negative numbers
+Number.prototype.mod = function(n) {
+    return ((this%n)+n)%n;
+};
+
+app.listen(port)
