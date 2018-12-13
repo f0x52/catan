@@ -19,6 +19,20 @@ a {
   color: #00B7FF;
 }
 
+.buttons {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  text-align: center;
+}
+
+.github img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+}
+
 #board {
   flex: 1 1 auto;
   align-self: center;
@@ -63,9 +77,24 @@ number {
   height: 400px;
   width: 400px;
   overflow-wrap: anywhere;
-  background: #1c1c1c;
-  color: white;
+  color: black;
   align-self: flex-end;
+  border: 15px solid transparent;
+  border-image: url(../images/board.png) 3 round;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  background: #c5bfa4;
+  position: fixed;
+  right: 15px;
+  bottom: 15px;
+}
+
+#fullscreen::after {
+  content: "Open fullscreen";
+}
+
+html:fullscreen #fullscreen::after {
+  content: "Close fullscreen";
 }
 
 #chat {
@@ -86,12 +115,20 @@ number {
   display: flex;
   flex-direction: column;
   align-self: center;
+  border: 15px solid transparent;
+  margin-left: 2.5vh;
+  border-image: url(../images/board.png) 3 round;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  background: #9e8f4c;
+  position: fixed;
+  left: 0;
 }
 
 .resources div {
   margin: 1.5vh;
-  height: 15vh;
-  width: 11.4vh;
+  height: 15.5vh;
+  width: 11.8vh;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   display: flex;
