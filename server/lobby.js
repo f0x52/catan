@@ -74,7 +74,8 @@ function createLobby(){
     board: board,
     colors: colors,
     buildings: {},
-    turnCount: 0
+    turnCount: 0,
+    victory: false
   }
 
   return lobby
