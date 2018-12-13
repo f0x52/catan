@@ -38,7 +38,6 @@ socket.onmessage = function(event) {
     drawBoard(game.board)
     displayResources(game.players[game.playerID].resources)
   } else if (data.action == "update resources") {
-    console.log(data)
     displayResources(data.resources)
   } else if (data.action == "build") {
     saw.play()
