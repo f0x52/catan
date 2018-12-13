@@ -62,7 +62,7 @@ wss.on("connection", function(ws) {
     ready: false, // TODO: set to false!
     color: lobby.colors[playerID],
     rolled: false,
-    resources: {brick: 0, grain: 0, iron: 0, wool: 0, wood: 0}
+    resources: {brick: 10, grain: 10, iron: 10, wool: 10, wood: 10}
   }
 
   lobby.players.push(player)
@@ -210,6 +210,24 @@ wss.on("connection", function(ws) {
         //Gnome
         stats.gnomes++
       }
+
+      if(action.msg.startsWith("/trade")){
+        let data = action.msg.split(" ")
+        if(player.resources[data[1]] != undefined && player.resources[data[2]] != undefined){
+          if(player.resources[data[1]] >= 2){
+            player.resources[data[1]] = player.resources[data[1]]-2
+            player.resources[data[2]]++
+            sendUpdatedResources(player)
+            callout(player.color + " sucessfully traded 2 " + data[1] + " for 1 " + data[2], true)
+          }else{
+            callout("Not enough resources", false)
+          }
+        }else{
+          callout("Invalid trade parameters, try again", false)
+        }
+        return
+      }
+
       lobby.players.forEach((player) => {
         player.socket.ssend(action)
       })
