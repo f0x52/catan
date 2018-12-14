@@ -4,7 +4,6 @@ let chat = document.getElementById("chat")
 let html = document.getElementsByTagName("html")[0]
 let dice1 = document.getElementById("dice1")
 let dice2 = document.getElementById("dice2")
-let scoreboard = document.getElementById("scoreboard")
 let myColor = "red"
 let game
 
@@ -84,6 +83,12 @@ socket.onmessage = function(event) {
     addMessage(chat, data)
   } else if (data.action == "diceroll") {
     diceRoll(data.dice1, data.dice2)
+  } else if (data.action == "victoryPoint") {
+    let score = document.getElementById("score"+data.player)
+    score.textContent = `${data.name}: ${data.victoryPoints}`
+  } else if (data.action == "join") {
+    let score = document.getElementById("score"+data.player)
+    score.textContent = `${data.name}: 0`
   }
 }
 

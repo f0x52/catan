@@ -71,9 +71,9 @@ app.ws("/ws/:name", function(ws, req) {
   ws.ssend(msg)
 
   let msg2 = {
-    action: "chat",
-    from: "Catan",
-    msg: req.params.name + " has joined the game"
+    action: "join",
+    player: playerID,
+    name: player.name
   }
   lobby.players.forEach((player) => {
     player.socket.ssend(msg2)
@@ -128,10 +128,15 @@ app.ws("/ws/:name", function(ws, req) {
         player.resources.brick--
 
         player.victoryPoints++
-        let event = {
+        let pointEvent = {
           action: "victoryPoint",
-          victoryPoints: victoryPoints
+          victoryPoints: player.victoryPoints,
+          player: playerID,
+          name: player.name
         }
+        lobby.players.forEach((player) => {
+          player.socket.ssend(pointEvent)
+        })
         if(player.victoryPoints >= 10){
           func.victory(player)
         }
@@ -204,9 +209,11 @@ app.ws("/ws/:name", function(ws, req) {
       }
 
       player.victoryPoints++
-      let event = {
+      let pointEvent = {
         action: "victoryPoint",
-        victoryPoints: victoryPoints
+        victoryPoints: player.victoryPoints,
+        player: playerID,
+        name: player.name
       }
       if(player.victoryPoints >= 10){
         func.victory(player)
@@ -216,6 +223,7 @@ app.ws("/ws/:name", function(ws, req) {
       func.sendUpdatedResources(player)
 
       lobby.players.forEach((player) => {
+        player.socket.ssend(pointEvent)
         player.socket.ssend(action)
       })
 
