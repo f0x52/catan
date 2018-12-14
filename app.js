@@ -261,9 +261,11 @@ app.ws("/ws/:name", function(ws, req) {
       console.log("dice rolled")
       player.rolled = true
       let total = 7
+      let dice1
+      let dice2
       while(total == 7){
-        let dice1 = Math.floor((Math.random() * 6)+1)
-        let dice2 = Math.floor((Math.random() * 6)+1)
+        dice1 = Math.floor((Math.random() * 6)+1)
+        dice2 = Math.floor((Math.random() * 6)+1)
         total = dice1+dice2
       }
 
