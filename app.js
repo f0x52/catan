@@ -70,6 +70,15 @@ app.ws("/ws/:name", function(ws, req) {
    }
   ws.ssend(msg)
 
+  let msg2 = {
+    action: "chat",
+    from: "Catan",
+    msg: req.params.name + " has joined the game"
+  }
+  lobby.players.forEach((player) => {
+    player.socket.ssend(msg2)
+  })
+
   ws.on("message", function incoming(message) {
     let now = new Date()
     let timestamp = now.getDay()+"/"+now.getMonth() + " " + now.getHours()+":"+now.getMinutes()+":"+now.getSeconds()
@@ -119,6 +128,10 @@ app.ws("/ws/:name", function(ws, req) {
         player.resources.brick--
 
         player.victoryPoints++
+        let event = {
+          action: "victoryPoint",
+          victoryPoints: victoryPoints
+        }
         if(player.victoryPoints >= 10){
           func.victory(player)
         }
@@ -191,6 +204,10 @@ app.ws("/ws/:name", function(ws, req) {
       }
 
       player.victoryPoints++
+      let event = {
+        action: "victoryPoint",
+        victoryPoints: victoryPoints
+      }
       if(player.victoryPoints >= 10){
         func.victory(player)
       }
@@ -241,7 +258,7 @@ app.ws("/ws/:name", function(ws, req) {
         let dice2 = Math.floor((Math.random() * 6)+1)
         total = dice1+dice2
       }
-      
+
       Object.keys(lobby.board.tiles).forEach((tileName) => {
         let currentTile = lobby.board.tiles[tileName]
         if(currentTile.number == total){
