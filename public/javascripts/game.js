@@ -1,5 +1,4 @@
-//let name = window.prompt("Username")
-let name = "testuser"
+let name = window.prompt("Username")
 let socket = new WebSocket("ws://localhost:3000/ws/"+name)
 let chat = document.getElementById("chat")
 let html = document.getElementsByTagName("html")[0]
