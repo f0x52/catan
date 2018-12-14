@@ -1,4 +1,7 @@
 let name = window.prompt("Username")
+if (name.trim() == "") {
+  name = "catan_user" + Math.floor(Math.random()*1000)
+}
 let socket = new WebSocket("ws://localhost:3000/ws/"+name)
 let chat = document.getElementById("chat")
 let html = document.getElementsByTagName("html")[0]
