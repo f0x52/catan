@@ -7,6 +7,7 @@ let createLobby = require("./server/lobby")
 let port = process.argv[2]
 let app = express()
 let expressWs = require('express-ws')(app);
+let func = require('./server/functions')
 
 let stats = {
   games: 0,
@@ -77,8 +78,13 @@ app.ws("/ws/:name", function(ws, req) {
     let action = JSON.parse(message)
     let lobby = lobbies[index]
 
+    //Function needs access to players/lobby, so defined inside ws
+    function victory(player){
+      lobby.started = false
+      lobby.victory = true
+      callout("🎉 " + player.color + " has won the game! 🎉")
+    }
     function callout(msg, all){
-
       let message = {
         action: "chat",
         from: "Catan",
@@ -94,21 +100,7 @@ app.ws("/ws/:name", function(ws, req) {
       }
     }
 
-    function victory(player){
-      lobby.started = false
-      lobby.victory = true
-      callout("🎉 " + player.color + " has won the game! 🎉")
-    }
-
-    //TODO: this function needs a better place
-    function sendUpdatedResources(player) {
-      let res = {
-        action: "update resources",
-        resources: player.resources
-      }
-      player.socket.ssend(res)
-    }
-
+    //TODO: these functions needs a better place
     if (action.action == "build") {
       let buildingNum = action.what.substr(8) //remove building prefix
 
@@ -128,13 +120,13 @@ app.ws("/ws/:name", function(ws, req) {
 
         player.victoryPoints++
         if(player.victoryPoints >= 10){
-          victory(player)
+          func.victory(player)
         }
 
         if(lobby.turnCount < 8){
           player.resources = JSON.parse(JSON.stringify(roadResources))
         }
-        sendUpdatedResources(player)
+        func.sendUpdatedResources(player)
       }
 
       if(action.what.startsWith("road") && (player.resources.brick < 1 || player.resources.wood < 1 )){
@@ -148,7 +140,7 @@ app.ws("/ws/:name", function(ws, req) {
 
         player.resources.wood--
         player.resources.brick--
-        sendUpdatedResources(player)
+        func.sendUpdatedResources(player)
         if(lobby.turnCount < 8){
           callout("Please press next turn", false)
         }
@@ -200,11 +192,11 @@ app.ws("/ws/:name", function(ws, req) {
 
       player.victoryPoints++
       if(player.victoryPoints >= 10){
-        victory(player)
+        func.victory(player)
       }
       player.resources.grain = player.resources.grain - 3
       player.resources.iron = player.resources.iron - 2
-      sendUpdatedResources(player)
+      func.sendUpdatedResources(player)
 
       lobby.players.forEach((player) => {
         player.socket.ssend(action)
@@ -224,7 +216,7 @@ app.ws("/ws/:name", function(ws, req) {
           if(player.resources[data[1]] >= 3){
             player.resources[data[1]] = player.resources[data[1]]-3
             player.resources[data[2]]++
-            sendUpdatedResources(player)
+            func.sendUpdatedResources(player)
             callout(player.name + " sucessfully traded 2 " + data[1] + " for 1 " + data[2], true)
           }else{
             callout("Not enough resources", false)
@@ -271,10 +263,16 @@ app.ws("/ws/:name", function(ws, req) {
       })
 
       lobby.players.forEach((player) => {
-        sendUpdatedResources(player)
+        func.sendUpdatedResources(player)
+        let event = {
+          action: "diceroll",
+          dice1: dice1,
+          dice2: dice2
+        }
+        player.socket.ssend(event)
       })
 
-      callout(player.name + " rolled "+ total, true)
+      //callout(player.name + " rolled "+ total, true)
     }
 
     if (action.action == "next pressed" && lobby.started && player.id == lobby.currentPlayer && (player.rolled || lobby.turnCount < 8)) {
@@ -296,7 +294,7 @@ app.ws("/ws/:name", function(ws, req) {
       if(lobby.turnCount < 8){
         lobby.players[lobby.currentPlayer].resources = JSON.parse(JSON.stringify(villageResources)) //big gay
         lobby.players.forEach((player) => {
-          sendUpdatedResources(player)
+          func.sendUpdatedResources(player)
         })
       }
       console.log("Turn given to: " + lobby.currentPlayer)
@@ -328,7 +326,7 @@ app.ws("/ws/:name", function(ws, req) {
           lobby.currentPlayer = randomnumber
           lobby.players[lobby.currentPlayer].resources = JSON.parse(JSON.stringify(villageResources))
           lobby.players.forEach((player) => {
-            sendUpdatedResources(player)
+            func.sendUpdatedResources(player)
           })
           callout(lobby.players[lobby.currentPlayer].color + " " + lobby.currentPlayer + " has the turn", true)
         }

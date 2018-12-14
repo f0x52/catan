@@ -26,7 +26,31 @@ a {
   text-align: center;
 }
 
-button, .message {
+.dicecenter  {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+}
+
+.dice {
+  display: inline-block;
+  margin: 5px;
+}
+
+.dice div {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  border: 2px solid black;
+  margin: 5px;
+}
+
+.dice div.spinning {
+  animation: spin 15s ease infinite;
+}
+
+button, .message, .dice, #warning {
   border: 15px solid transparent;
   border-image: url(../images/board.png) 3 round;
   image-rendering: pixelated;
@@ -361,32 +385,32 @@ catan-road.white {
   background: white;
 }
 
-dice.num1{
+.dice .num1{
   background: url(../images/dice-1.png);
   background-size: cover;
 }
 
-dice.num2{
+.dice .num2{
   background: url(../images/dice-2.png);
   background-size: cover;
 }
 
-dice.num3{
+.dice .num3{
   background: url(../images/dice-3.png);
   background-size: cover;
 }
 
-dice.num4{
+.dice .num4{
   background: url(../images/dice-4.png);
   background-size: cover;
 }
 
-dice.num5{
+.dice .num5{
   background: url(../images/dice-5.png);
   background-size: cover;
 }
 
-dice.num6{
+.dice .num6{
   background: url(../images/dice-6.png);
   background-size: cover;
 }
@@ -414,6 +438,12 @@ dice.num6{
 .resources div#wood {
   background: url(../images/card-wood.png);
   background-size: cover;
+}
+
+/* DICE SPINNING */
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
 }
 
 /* RAINBOW */
@@ -449,5 +479,24 @@ dice.num6{
   100% { /* red */
     color: #e81d1d;
     border-color: #e81d1d;
+  }
+}
+
+#warning {
+  display: none;
+  position: fixed;
+  width: 80vw;
+  height: 80vh;
+  top: 10vh;
+  left: 10vw;
+}
+
+#warning h1 {
+  color: red;
+}
+
+@media screen and (max-width: 1000px) {
+  #warning {
+    display: block;
   }
 }

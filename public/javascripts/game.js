@@ -1,10 +1,34 @@
-let name = window.prompt("Username")
+//let name = window.prompt("Username")
+let name = "testuser"
 let socket = new WebSocket("ws://localhost:3000/ws/"+name)
 let chat = document.getElementById("chat")
 let html = document.getElementsByTagName("html")[0]
+let dice1 = document.getElementById("dice1")
+let dice2 = document.getElementById("dice2")
 let myColor = "red"
 let game
 
+function diceRoll(num1, num2) {
+  let diceSpin = []
+  for(let i=0; i<30; i++) {
+    diceSpin.push(Math.floor(Math.random()*6)+1)
+  }
+  let rolling = setInterval(function() {
+    if (diceSpin.length > 0) {
+      dice1.className = "spinning num"+diceSpin.pop()
+      dice2.className = "spinning num"+diceSpin.pop()
+    } else {
+      dice1.className = "num"+num1
+      dice2.className = "num"+num2
+      clearInterval(rolling)
+    }
+  }, 100)
+}
+
+
+document.getElementById("warning").addEventListener("click", function(e) {
+  e.target.remove()
+})
 
 // sawing sound, released CC by 3.0
 // https://github.com/SlimeKnights/TinkersConstruct/blob/1.12/resources/assets/tconstruct/sounds/Credits.txt
@@ -59,6 +83,8 @@ socket.onmessage = function(event) {
     document.getElementById(data.what).upgrade()
   } else if (data.action == "chat") {
     addMessage(chat, data)
+  } else if (data.action == "diceroll") {
+    diceRoll(data.dice1, data.dice2)
   }
 }
 
