@@ -235,10 +235,13 @@ app.ws("/ws/:name", function(ws, req) {
     if (action.action == "dice rolled" && player.id == lobby.currentPlayer && !player.rolled && lobby.turnCount >= 8) {
       console.log("dice rolled")
       player.rolled = true
-      let dice1 = Math.floor((Math.random() * 6)+1)
-      let dice2 = Math.floor((Math.random() * 6)+1)
-      let total = dice1+dice2
-
+      let total = 7
+      while(total == 7){
+        let dice1 = Math.floor((Math.random() * 6)+1)
+        let dice2 = Math.floor((Math.random() * 6)+1)
+        total = dice1+dice2
+      }
+      
       Object.keys(lobby.board.tiles).forEach((tileName) => {
         let currentTile = lobby.board.tiles[tileName]
         if(currentTile.number == total){
