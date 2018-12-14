@@ -70,7 +70,8 @@ app.ws("/ws/:name", function(ws, req) {
   ws.ssend(msg)
 
   ws.on("message", function incoming(message) {
-    console.log("[LOG] " + message)
+    let now = new Date()
+    console.log(now.toDateString(), message)
 
     let action = JSON.parse(message)
     let lobby = lobbies[index]
