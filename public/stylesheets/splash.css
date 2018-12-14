@@ -48,3 +48,9 @@ img {
   padding: 1rem;
   border-radius: 0.5rem;
 }
+
+.disclaimer{
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+}
