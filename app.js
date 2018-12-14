@@ -71,7 +71,8 @@ app.ws("/ws/:name", function(ws, req) {
 
   ws.on("message", function incoming(message) {
     let now = new Date()
-    console.log(now.toDateString(), message)
+    let timestamp = now.getDay()+"/"+now.getMonth() + " " + now.getHours()+":"+now.getMinutes()+":"+now.getSeconds()
+    console.log(timestamp, message)
 
     let action = JSON.parse(message)
     let lobby = lobbies[index]
