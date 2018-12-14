@@ -4,6 +4,7 @@ let chat = document.getElementById("chat")
 let html = document.getElementsByTagName("html")[0]
 let dice1 = document.getElementById("dice1")
 let dice2 = document.getElementById("dice2")
+let scoreboard = document.getElementById("scoreboard")
 let myColor = "red"
 let game
 
@@ -23,7 +24,6 @@ function diceRoll(num1, num2) {
     }
   }, 100)
 }
-
 
 document.getElementById("warning").addEventListener("click", function(e) {
   e.target.remove()

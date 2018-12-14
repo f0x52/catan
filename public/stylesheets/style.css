@@ -50,7 +50,7 @@ a {
   animation: spin 15s ease infinite;
 }
 
-button, .message, .dice, #warning {
+button, .message, .dice, #warning, #scoreboard {
   border: 15px solid transparent;
   border-image: url(../images/board.png) 3 round;
   image-rendering: pixelated;
@@ -62,13 +62,6 @@ button, .message, .dice, #warning {
 button {
   margin: 5px;
   cursor: pointer;
-}
-
-.github img {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: 0;
 }
 
 #board {
@@ -107,6 +100,21 @@ number {
   grid-area: num;
   background-image: url(../images/numbers.png);
   background-size: auto 100%;
+}
+
+#scoreboard {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  display: flex;
+}
+
+#scoreboard div {
+  margin: 5px;
+}
+
+#scoreboard div.active {
+  border: 5px solid red;
 }
 
 .message {
