@@ -503,7 +503,7 @@ catan-road.white {
   color: red;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 600px) {
   #warning {
     display: block;
   }
