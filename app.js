@@ -268,6 +268,7 @@ app.ws("/ws/:name", function(ws, req) {
         dice2 = Math.floor((Math.random() * 6)+1)
         total = dice1+dice2
       }
+      console.log(total)
 
       Object.keys(lobby.board.tiles).forEach((tileName) => {
         let currentTile = lobby.board.tiles[tileName]
